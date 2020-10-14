@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>Gridea</title>
-    <updated>2020-10-14T09:49:43.653Z</updated>
+    <updated>2020-10-14T10:00:02.851Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,4 +10,40 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Netty 源码解读（0）]]></title>
+        <id>https://zwangsheng.github.io/post/netty-yuan-ma-jie-du-0/</id>
+        <link href="https://zwangsheng.github.io/post/netty-yuan-ma-jie-du-0/">
+        </link>
+        <updated>2020-10-14T09:51:22.000Z</updated>
+        <content type="html"><![CDATA[<p>netty是一个基于nio的编程框架。帮助我们屏蔽了很多java nio的底层的，对许多类进行封装，使用netty可以进行简单有效的开发网络。同时netty也作为很重要的网络中间件存在。<br>
+首先先看一段实例代码，基本上netty的客户端都是采用的类似的格式进行编写，在接下来的过程当中，将对netty的重要的类的源码进行解读</p>
+<pre><code class="language-java">private void start() throws InterruptedException {
+        // 线程池
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        try {
+            // 启动必备
+            Bootstrap bootstrap = new Bootstrap();
+            // 添加线程池
+            bootstrap.group(eventLoopGroup)
+                    // 指定NIO传输
+                    .channel(NioSocketChannel.class)
+                    // 指定连接的地址，一个套接字对
+                    .remoteAddress(new InetSocketAddress(host, port))
+                    // 添加处理器
+                    .handler(new ClientHandler());
+            // 阻塞到连接完成为止
+            ChannelFuture future = bootstrap.connect().sync();
+            // 阻塞到收到关闭事件
+            future.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            // 阻塞到优雅的关闭完
+            eventLoopGroup.shutdownGracefully().sync();
+        }
+    }
+</code></pre>
+]]></content>
+    </entry>
 </feed>
