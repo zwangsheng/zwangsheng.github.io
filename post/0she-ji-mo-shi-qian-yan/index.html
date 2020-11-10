@@ -1,0 +1,175 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>0.设计模式-前言 | Gridea</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1604991904381">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="0.设计模式-前言 | Gridea - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="设计模式很重要。
+设计模式很重要。
+设计模式很重要。
+当你写完代码，过一个星期一个月半年，回头看，你会发现自己的代码不够简洁，有更好的优化空间。
+可能代码里出现重复的，逻辑复杂的，耦合度奇高的现象。
+对于程序员来说，最重要的就是抽象能力，设..." />
+    <meta name="keywords" content="设计模式" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1604991904381" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              0.设计模式-前言
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-11-10
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://zwangsheng.github.io/tag/CeSg2MAo4/" class="post-tag">
+                  # 设计模式
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>设计模式很重要。<br>
+设计模式很重要。<br>
+设计模式很重要。<br>
+当你写完代码，过一个星期一个月半年，回头看，你会发现自己的代码不够简洁，有更好的优化空间。<br>
+可能代码里出现重复的，逻辑复杂的，耦合度奇高的现象。<br>
+对于程序员来说，最重要的就是抽象能力，设计模式就能很好的帮助你锻炼抽象能力。<br>
+🌳🌳🌳🌳🌳🌳🌳<br>
+设计模式的六大原则<br>
+1.单一原则  一个类和方法只做一件事（但是会存在一些不同的场景）<br>
+2.里氏替换原则<br>
+3.依赖倒置原则 细节依赖抽象，下层依赖上层（传参和变量最好使用抽象和接口）<br>
+4.接口隔离 接口粒度要小，但是会带来复杂度<br>
+5.迪米特原则 降低耦合，类与类的可知越少越好<br>
+6.开闭原则 抽象来建立架构，实现来拓展功能</p>
+<p>之后会进行每一个设计模式都进行代码设计</p>
+<p>推荐看的书，包括本文的参考资料<br>
+<a href="https://github.com/fuzhengwei/CodeGuide/wiki">重学Java设计模式「真实场景实战」</a></p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

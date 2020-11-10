@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>Gridea</title>
-    <updated>2020-10-14T10:03:37.134Z</updated>
+    <updated>2020-11-10T07:05:10.667Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -11,39 +11,28 @@
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
     <entry>
-        <title type="html"><![CDATA[Netty 源码解读（0）]]></title>
-        <id>https://zwangsheng.github.io/post/netty-yuan-ma-jie-du-0/</id>
-        <link href="https://zwangsheng.github.io/post/netty-yuan-ma-jie-du-0/">
+        <title type="html"><![CDATA[0.设计模式-前言]]></title>
+        <id>https://zwangsheng.github.io/post/0she-ji-mo-shi-qian-yan/</id>
+        <link href="https://zwangsheng.github.io/post/0she-ji-mo-shi-qian-yan/">
         </link>
-        <updated>2020-10-14T09:51:22.000Z</updated>
-        <content type="html"><![CDATA[<p>netty是一个基于nio的编程框架。帮助我们屏蔽了很多java nio的底层的，对许多类进行封装，使用netty可以进行简单有效的开发网络。同时netty也作为很重要的网络中间件存在。<br>
-首先先看一段实例代码，基本上netty的客户端都是采用的类似的格式进行编写，在接下来的过程当中，将对netty的重要的类的源码进行解读</p>
-<pre><code class="language-java">private void start() throws InterruptedException {
-        // 线程池
-        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-        try {
-            // 启动必备
-            Bootstrap bootstrap = new Bootstrap();
-            // 添加线程池
-            bootstrap.group(eventLoopGroup)
-                    // 指定NIO传输
-                    .channel(NioSocketChannel.class)
-                    // 指定连接的地址，一个套接字对
-                    .remoteAddress(new InetSocketAddress(host, port))
-                    // 添加处理器
-                    .handler(new ClientHandler());
-            // 阻塞到连接完成为止
-            ChannelFuture future = bootstrap.connect().sync();
-            // 阻塞到收到关闭事件
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            // 阻塞到优雅的关闭完
-            eventLoopGroup.shutdownGracefully().sync();
-        }
-    }
-</code></pre>
+        <updated>2020-11-10T06:46:09.000Z</updated>
+        <content type="html"><![CDATA[<p>设计模式很重要。<br>
+设计模式很重要。<br>
+设计模式很重要。<br>
+当你写完代码，过一个星期一个月半年，回头看，你会发现自己的代码不够简洁，有更好的优化空间。<br>
+可能代码里出现重复的，逻辑复杂的，耦合度奇高的现象。<br>
+对于程序员来说，最重要的就是抽象能力，设计模式就能很好的帮助你锻炼抽象能力。<br>
+🌳🌳🌳🌳🌳🌳🌳<br>
+设计模式的六大原则<br>
+1.单一原则  一个类和方法只做一件事（但是会存在一些不同的场景）<br>
+2.里氏替换原则<br>
+3.依赖倒置原则 细节依赖抽象，下层依赖上层（传参和变量最好使用抽象和接口）<br>
+4.接口隔离 接口粒度要小，但是会带来复杂度<br>
+5.迪米特原则 降低耦合，类与类的可知越少越好<br>
+6.开闭原则 抽象来建立架构，实现来拓展功能</p>
+<p>之后会进行每一个设计模式都进行代码设计</p>
+<p>推荐看的书，包括本文的参考资料<br>
+<a href="https://github.com/fuzhengwei/CodeGuide/wiki">重学Java设计模式「真实场景实战」</a></p>
 ]]></content>
     </entry>
 </feed>
