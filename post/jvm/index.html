@@ -1,22 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://zwangsheng.github.io</id>
-    <title>Gridea</title>
-    <updated>2020-12-09T07:19:47.057Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://zwangsheng.github.io"/>
-    <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
-    <subtitle>-wangsheng-</subtitle>
-    <logo>https://zwangsheng.github.io/images/avatar.png</logo>
-    <icon>https://zwangsheng.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
-    <entry>
-        <title type="html"><![CDATA[JVM]]></title>
-        <id>https://zwangsheng.github.io/post/jvm/</id>
-        <link href="https://zwangsheng.github.io/post/jvm/">
-        </link>
-        <updated>2020-12-09T01:49:05.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="java-程序的执行过程">java 程序的执行过程</h2>
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JVM | Gridea</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1607498235425">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="JVM | Gridea - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="java 程序的执行过程
+.java -(javac)&gt; .class -(JVM)&gt; 方法区
+java 文件被javac翻译成class文件，由jvm加载到方法区，可以被JVM的执行引擎进行执行，执行引擎执行的时候，会翻译成操..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1607498235425" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              JVM
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-09
+              </span>
+              <span>
+                11 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="java-程序的执行过程">java 程序的执行过程</h2>
 <p>.java -(javac)&gt; .class -(JVM)&gt; 方法区<br>
 java 文件被javac翻译成class文件，由jvm加载到方法区，可以被JVM的执行引擎进行执行，执行引擎执行的时候，会翻译成操作系统的机器指令</p>
 <h2 id="jvm的本质">jvm的本质</h2>
@@ -318,6 +386,261 @@ Custom ClassLoader 自定义</li>
 加载一个东西先问父类能不能加载，不行在一层一层传递<br>
 防止替换了核心库的东西<br>
 --- JVM调优之后补 ---</p>
-]]></content>
-    </entry>
-</feed>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#java-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B">java 程序的执行过程</a></li>
+<li><a href="#jvm%E7%9A%84%E6%9C%AC%E8%B4%A8">jvm的本质</a></li>
+<li><a href="#java%E7%9A%84%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7">java的语言特性</a></li>
+</ul>
+</li>
+<li><a href="#jvm%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">jvm的内存模型</a>
+<ul>
+<li><a href="#java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88">java虚拟机栈</a>
+<ul>
+<li><a href="#%E6%A0%88%E5%B8%A7">栈帧</a>
+<ul>
+<li><a href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8">局部变量表</a>
+<ul>
+<li><a href="#%E5%8F%98%E9%87%8F%E6%A7%BD%E5%A4%8D%E7%94%A8">变量槽复用</a></li>
+</ul>
+</li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88">操作数栈</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5">动态连接</a></li>
+<li><a href="#%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80">返回地址</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">本地方法栈</a></li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8">程序计数器</a></li>
+<li><a href="#%E5%A0%86">堆</a></li>
+<li><a href="#%E6%96%B9%E6%B3%95%E5%8C%BA">方法区</a>
+<ul>
+<li><a href="#%E5%B8%B8%E9%87%8F%E6%B1%A0">常量池</a>
+<ul>
+<li><a href="#class-%E5%B8%B8%E9%87%8F%E6%B1%A0%E9%9D%99%E6%80%81%E5%B8%B8%E9%87%8F%E6%B1%A0">class 常量池（静态常量池）</a></li>
+<li><a href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0">运行时常量池</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0">字符串常量池</a>
+<ul>
+<li><a href="#string-%E7%9A%84%E4%BD%BF%E7%94%A8">String 的使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98">堆外内存（直接内存）</a></li>
+<li><a href="#jvm%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B">JVM启动流程</a></li>
+<li><a href="#%E5%A0%86%E7%A9%BA%E9%97%B4%E7%9A%84%E5%86%85%E5%AD%98%E5%88%92%E5%88%86">堆空间的内存划分</a>
+<ul>
+<li><a href="#%E5%88%86%E4%BB%A3%E5%88%92%E5%88%86">分代划分</a>
+<ul>
+<li><a href="#%E6%96%B0%E7%94%9F%E4%BB%A3-%E6%9C%9D%E7%94%9F%E5%A4%95%E4%BA%A1">新生代 （朝生夕亡）</a>
+<ul>
+<li><a href="#eden-8">Eden 8</a></li>
+<li><a href="#survivor-from-1">Survivor FROM 1</a></li>
+<li><a href="#survivor-to-1">Survivor TO 1</a></li>
+</ul>
+</li>
+<li><a href="#%E8%80%81%E5%B9%B4%E4%BB%A3">老年代</a></li>
+</ul>
+</li>
+<li><a href="#region%E5%88%92%E5%88%86">Region划分</a></li>
+</ul>
+</li>
+<li><a href="#jvm-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA">JVM 对象的创建</a>
+<ul>
+<li><a href="#jvm-%E9%81%87%E5%88%B0%E4%B8%80%E6%9D%A1new-%E6%8C%87%E4%BB%A4">JVM 遇到一条new 指令</a>
+<ul>
+<li><a href="#%E6%8C%87%E9%92%88%E7%A2%B0%E6%92%9E">指针碰撞</a></li>
+<li><a href="#%E7%A9%BA%E9%97%B2%E5%88%97%E8%A1%A8cms">空闲列表（CMS）</a></li>
+<li><a href="#cas">CAS</a></li>
+<li><a href="#%E5%88%86%E9%85%8D%E7%BC%93%E5%86%B2-tlab">分配缓冲 TLAB</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80">对象的内存布局</a></li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F">对象的访问方式</a>
+<ul>
+<li><a href="#%E5%8F%A5%E6%9F%84">句柄</a></li>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E6%8C%87%E9%92%88hotspot">直接指针（hotspot）</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%AD%98%E6%B4%BB">判断对象存活</a>
+<ul>
+<li><a href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95python">引用计数法（python）</a></li>
+<li><a href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90">可达性分析</a>
+<ul>
+<li><a href="#gc-roots">GC Roots</a>
+<ul>
+<li><a href="#class%E7%9A%84%E5%9B%9E%E6%94%B6%E6%9D%A1%E4%BB%B6">class的回收条件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B">引用类型</a>
+<ul>
+<li><a href="#%E5%BC%BA%E5%BC%95%E7%94%A8">强引用</a></li>
+<li><a href="#%E8%BD%AF%E5%BC%95%E7%94%A8-softreference">软引用 SoftReference</a></li>
+<li><a href="#%E5%BC%B1%E5%BC%95%E7%94%A8-weakreference">弱引用 WeakReference</a></li>
+<li><a href="#%E8%99%9A%E5%BC%95%E7%94%A8-phantomreference">虚引用 PhantomReference</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90">逃逸分析</a></li>
+<li><a href="#%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%9B%B4%E6%8E%A5%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3">大对象直接进入老年代</a></li>
+<li><a href="#%E9%95%BF%E6%9C%9F%E5%AD%98%E6%B4%BB%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3">长期存活进入老年代</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E5%B9%B4%E9%BE%84%E5%88%86%E9%85%8D">动态年龄分配</a></li>
+<li><a href="#%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D">空间分配担保</a></li>
+<li><a href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95">垃圾回收算法</a>
+<ul>
+<li><a href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95copying-%E6%96%B0%E7%94%9F%E4%BB%A3">复制算法（Copying） - 新生代</a>
+<ul>
+<li><a href="#apple%E5%BC%8F%E5%9B%9E%E6%94%B6">apple式回收</a></li>
+</ul>
+</li>
+<li><a href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4mark-sweepcms">标记-清除（Mark-Sweep）CMS</a></li>
+<li><a href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86mark-compact">标记-整理（Mark-Compact）</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">垃圾回收器</a>
+<ul>
+<li><a href="#serialserial-old">Serial/Serial Old</a></li>
+<li><a href="#parallel-scavengeparallel-scavenge">Parallel Scavenge/Parallel Scavenge</a></li>
+<li><a href="#parnew">ParNew</a></li>
+<li><a href="#concurrent-mark-sweep-cms">Concurrent Mark Sweep （CMS）</a>
+<ul>
+<li><a href="#%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0">初始标记</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0">并发标记</a></li>
+<li><a href="#%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0">重新标记</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%B8%85%E9%99%A4">并发清除</a></li>
+<li><a href="#cpu%E6%95%8F%E6%84%9F">CPU敏感</a></li>
+<li><a href="#%E6%B5%AE%E5%8A%A8%E5%9E%83%E5%9C%BE">浮动垃圾</a></li>
+<li><a href="#%E7%A9%BA%E9%97%B4%E7%A2%8E%E7%89%87">空间碎片</a></li>
+</ul>
+</li>
+<li><a href="#garbage-firstg1">Garbage First(G1)</a>
+<ul>
+<li><a href="#region">Region</a></li>
+<li><a href="#top-at-mark-starttams">Top at Mark Start（TAMS）</a></li>
+<li><a href="#rset-%E8%AE%B0%E5%BF%86%E9%9B%86-%E8%A7%A3%E5%86%B3%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8">Rset 记忆集 解决跨代引用</a></li>
+<li><a href="#cardtabel-%E5%8D%A1%E8%A1%A8-%E8%A7%A3%E5%86%B3rset%E5%AF%BB%E6%89%BE%E9%97%AE%E9%A2%98">cardTabel 卡表 解决Rset寻找问题</a></li>
+<li><a href="#%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0-2">初始标记</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0-2">并发标记</a></li>
+<li><a href="#%E6%9C%80%E7%BB%88%E6%A0%87%E8%AE%B0">最终标记</a></li>
+<li><a href="#%E7%AD%9B%E9%80%89%E5%9B%9E%E6%94%B6">筛选回收</a></li>
+<li><a href="#%E7%A9%BA%E9%97%B4%E6%95%B4%E5%90%88">空间整合</a></li>
+<li><a href="#%E8%BF%BD%E6%B1%82%E5%81%9C%E9%A1%BF%E6%97%B6%E9%97%B4">追求停顿时间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0">三色标记</a>
+<ul>
+<li><a href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%BC%8F%E6%A0%87%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95">三色标记漏标的处理办法</a>
+<ul>
+<li><a href="#incremental-update-cms">Incremental Update CMS</a></li>
+<li><a href="#snapshot-at-the-beginningsatbg1">snapshot-at-the-beginning（SATB）G1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%AE%89%E5%85%A8%E7%82%B9">安全点</a></li>
+<li><a href="#%E5%AE%89%E5%85%A8%E5%8C%BA">安全区</a></li>
+<li><a href="#class%E6%96%87%E4%BB%B6">Class文件</a>
+<ul>
+<li><a href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0">无符号数</a></li>
+<li><a href="#%E9%AD%94%E6%95%B0">魔数</a></li>
+<li><a href="#%E7%89%88%E6%9C%AC%E5%8F%B7">版本号</a></li>
+<li><a href="#%E5%B8%B8%E9%87%8F%E6%B1%A0-2">常量池</a></li>
+<li><a href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86">异常处理</a></li>
+</ul>
+</li>
+<li><a href="#class%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">class生命周期</a>
+<ul>
+<li><a href="#%E5%8A%A0%E8%BD%BD">加载</a></li>
+<li><a href="#%E9%AA%8C%E8%AF%81">验证</a>
+<ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E9%AA%8C%E8%AF%81-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B5%81">文件格式验证 （二进制流）</a></li>
+<li><a href="#%E5%85%83%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81">元数据验证</a></li>
+<li><a href="#%E5%AD%97%E8%8A%82%E7%A0%81%E9%AA%8C%E8%AF%81">字节码验证</a></li>
+<li><a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E9%AA%8C%E8%AF%81">符号引用验证</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%86%E5%A4%87">准备</a></li>
+<li><a href="#%E8%A7%A3%E6%9E%90">解析</a></li>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">初始化</a></li>
+<li><a href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6">双亲委派机制</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
