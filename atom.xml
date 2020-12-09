@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>Gridea</title>
-    <updated>2020-12-09T07:20:32.050Z</updated>
+    <updated>2020-12-09T09:12:00.938Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,6 +10,53 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Java线程在运行态究竟是内核态还是用户态？]]></title>
+        <id>https://zwangsheng.github.io/post/java-xian-cheng-zai-yun-xing-tai-jiu-jing-shi-nei-he-tai-huan-shi-yong-hu-tai/</id>
+        <link href="https://zwangsheng.github.io/post/java-xian-cheng-zai-yun-xing-tai-jiu-jing-shi-nei-he-tai-huan-shi-yong-hu-tai/">
+        </link>
+        <updated>2020-12-09T08:53:11.000Z</updated>
+        <content type="html"><![CDATA[<p>🈚️解，一个软件层面的线程的用户态和内核态是不能确定的<br>
+解析一下内核态和用户态<br>
+首先，内核态和用户态只是CPU执行权限<br>
+用户态切换到内核态的方式</p>
+<ol>
+<li>系统调用</li>
+<li>操作系统层面的异常</li>
+<li>外设的中断<br>
+目前了解的就是第一部分，java调用方法，唤起native方法，对应到OS的函数，是线程进入内核态。<br>
+ex.线程的park方法，对应OS的某个函数，切换到内核态<br>
+内核态就是进程在内核空间运行的状态<br>
+用户态就是进程在用户空间运行的状态</li>
+</ol>
+<h2 id="cpu的上下文">CPU的上下文</h2>
+<p>CPU的上下文可以狭义的理解为CPU的寄存器和程序计数器<br>
+（可以在JVM中找到对应的模拟，所以JVM可以看作虚拟的小型OS）</p>
+<h2 id="cpu上下文的类型">CPU上下文的类型</h2>
+<h3 id="进程上下文的切换">进程上下文的切换</h3>
+<p>这与我们说的进程上下文切换不同，系统调用的进程上下文切换针对的是同一个进程<br>
+可以理解为这是一种权限切换</p>
+<ol>
+<li>保存CPU寄存器中的用户态指令位</li>
+<li>CPU寄存器更新为内核态的指令位</li>
+<li>跳转到内核态运行任务</li>
+<li>系统调度结束之后，恢复原先保存的用户态，切换回用户态，继续运行</li>
+</ol>
+<h4 id="进程上下文切换">“进程上下文切换”</h4>
+<p>我们所谈到的进程上下文切换是多个进程进行切换的情况，它比上述的系统调用的上下文切换多一个步骤即为保存进程内部的虚拟资源<br>
+发生“进程上下文切换”的情况</p>
+<ol>
+<li>CPU时间轮转</li>
+<li>CPU资源（不单单是CPU时间）不足，进程被挂起</li>
+<li>进程主动挂起自己</li>
+<li>高优先级进程运行</li>
+</ol>
+<h3 id="线程上下文的切换">线程上下文的切换</h3>
+<p>分场景<br>
+如果两个线程属于不同的进程，那么切换就像进程上下文切换一样<br>
+如果两个线程属于同一个进程，那么切换的时候，虚拟内存不动，只需要切换线程私有的资源即可</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JVM]]></title>
         <id>https://zwangsheng.github.io/post/jvm/</id>
