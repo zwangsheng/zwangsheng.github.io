@@ -1,0 +1,568 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>并发编程 | Gridea</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1607589496773">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="并发编程 | Gridea - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="进程 进程是程序运行资源分配的最小单位
+线程 线程是CPU调度的最小单位，需要依赖进程存在
+并发 交替运行，单位时间
+并行 同时进行
+守护线程 一般是支持性线程，做辅助工作，当不存在非守护线程的线程时，JVM自动结束
+CPU时间片轮转机制
+..." />
+    <meta name="keywords" content="大纲,多线程,java" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1607589496773" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              并发编程
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-09
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+                <a href="https://zwangsheng.github.io/tag/CsuMWXkNL/" class="post-tag">
+                  # 大纲
+                </a>
+              
+                <a href="https://zwangsheng.github.io/tag/PH74qZoHb/" class="post-tag">
+                  # 多线程
+                </a>
+              
+                <a href="https://zwangsheng.github.io/tag/dSvTMpl1y/" class="post-tag">
+                  # java
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="进程-进程是程序运行资源分配的最小单位">进程 进程是程序运行资源分配的最小单位</h2>
+<h2 id="线程-线程是cpu调度的最小单位需要依赖进程存在">线程 线程是CPU调度的最小单位，需要依赖进程存在</h2>
+<h2 id="并发-交替运行单位时间">并发 交替运行，单位时间</h2>
+<h2 id="并行-同时进行">并行 同时进行</h2>
+<h2 id="守护线程-一般是支持性线程做辅助工作当不存在非守护线程的线程时jvm自动结束">守护线程 一般是支持性线程，做辅助工作，当不存在非守护线程的线程时，JVM自动结束</h2>
+<h2 id="cpu时间片轮转机制">CPU时间片轮转机制</h2>
+<p>CPU将时间切片，给进程分配时间，如果时间片用尽，CPU将分配给其他进程，如果时间片没用尽就阻塞或结束，CPU也会进行转换<br>
+因为进程的上下文切换需要消耗资源，所以存在时间片时长的问题<br>
+如果时间片太小，那么每次做完都会进行上下文切换，CPU的时间很大一部分浪费在切换上<br>
+如果时间片太长，交互请求会变差</p>
+<h2 id="run">run()</h2>
+<p>业务逻辑实现的地方，调用后不会开启新的线程来处理，当作一个普通方法使用</p>
+<h2 id="start">start()</h2>
+<p>让一个线程进入队列等待CPU，分配到CPU以后会执行run()方法，不可重复执行</p>
+<h2 id="yield">yield()</h2>
+<p>让当前线程让出CPU使用权，不会释放锁资源，让出后立刻进入就绪状态，可能被立刻选中</p>
+<h2 id="sleep">sleep()</h2>
+<p>线程进入休眠，不会释放锁资源</p>
+<h2 id="join">join()</h2>
+<p>把指定线程加入到当前线程，将交替运行的线程改为顺序进行<br>
+B线程调用了A线程的join，直到A执行完，B才能继续执行</p>
+<h2 id="wait">wait()</h2>
+<p>线程进入WAITING状态，只有等待另外线程通知，被中断或者超时才会返回，会释放锁</p>
+<h2 id="notify">notify()</h2>
+<p>通知在对象上等待的一个线程，让其从wait上返回，如果获得锁就运行，没获得就进入WAITING状态</p>
+<h2 id="notifyall">notifyAll()</h2>
+<p>通知对象上等待的所有线程</p>
+<h2 id="抢占式调度-系统通知">抢占式调度 系统通知</h2>
+<h2 id="协同式调度-线程本身控制通知系统进行切换">协同式调度 线程本身控制，通知系统进行切换</h2>
+<h2 id="线程共享">线程共享</h2>
+<h3 id="synchronized">synchronized</h3>
+<h4 id="对象锁">对象锁</h4>
+<ol>
+<li>同步代码块，锁住对象实例</li>
+<li>加在方法上</li>
+</ol>
+<h4 id="类锁">类锁</h4>
+<ol>
+<li>同步代码块，锁住类</li>
+<li>加在静态方法上</li>
+</ol>
+<h4 id="锁膨胀">锁膨胀</h4>
+<h3 id="volatile">volatile</h3>
+<p>保证不同线程对修饰变量的可见性，但不能保证原子性</p>
+<h3 id="threadlocal">ThreadLocal</h3>
+<p>ThreadLocal为所有线程提供变量副本<br>
+每个线程内部维护了一个ThreadLocalMap，key 是 ThreadLocal的实例<br>
+<img src="https://zwangsheng.github.io/post-images/1607567891869.jpg" alt="" loading="lazy"></p>
+<h4 id="threadlocal可能存在的内存泄漏问题">ThreadLocal可能存在的内存泄漏问题</h4>
+<p><img src="https://zwangsheng.github.io/post-images/1607568021890.jpg" alt="" loading="lazy"><br>
+key 与 ThreadLocal实例是弱引用，一旦发生GC就会被回收<br>
+那么ThreadLocalMap就回存在key为null的value，无法被访问到，可能会造成内存泄漏<br>
+只有currentThread结束，才能被回收</p>
+<h5 id="如果threadlocal的实例与key为强引用那么当栈上的threadlocalref不再指向threadlocal之后key与threadlocal还是强引用依然造成内存泄漏">如果ThreadLocal的实例与key为强引用，那么当栈上的ThreadLocalRef不再指向ThreadLocal之后，key与ThreadLocal还是强引用，依然造成内存泄漏</h5>
+<h5 id="如果threadlocal的实例与key为弱引用那在接下来的setgetremove的过程中还有可能对key为null的value进行清除">如果ThreadLocal的实例与key为弱引用，那在接下来的set，get，remove的过程中还有可能对key为null的value进行清除</h5>
+<h5 id="所以根源并不是弱引用而是threadlocalmap的生命周期和线程一样长如果不及时删除对应的key就回导致内存泄漏">所以根源并不是弱引用，而是ThreadLocalMap的生命周期和线程一样长，如果不及时删除对应的key就回导致内存泄漏</h5>
+<h2 id="线程协作">线程协作</h2>
+<h3 id="等待通知机制">等待通知机制</h3>
+<h4 id="等待方">等待方</h4>
+<figure data-type="image" tabindex="1"><img src="https://zwangsheng.github.io/post-images/1607568845504.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>获得锁</li>
+<li>条件不满足就wait，醒了以后还得检查条件</li>
+<li>条件满足进入业务</li>
+</ol>
+<h4 id="通知方">通知方</h4>
+<figure data-type="image" tabindex="2"><img src="https://zwangsheng.github.io/post-images/1607568853831.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>获得锁</li>
+<li>改变条件</li>
+<li>通知所有等待的线程</li>
+</ol>
+<h2 id="线程并发的工具类">线程并发的工具类</h2>
+<h3 id="forkjoin">ForkJoin</h3>
+<figure data-type="image" tabindex="3"><img src="https://zwangsheng.github.io/post-images/1607569806881.jpg" alt="" loading="lazy"></figure>
+<h4 id="recursiveaction用于没有返回结果的任务">RecursiveAction，用于没有返回结果的任务</h4>
+<h4 id="recursivetask用于有返回值的任务">RecursiveTask，用于有返回值的任务</h4>
+<h4 id="工作密取">工作密取</h4>
+<p>线程工作复杂度不同，有的线程先完成任务，那么从别的线程的队列头开始取工作完成<br>
+<img src="https://zwangsheng.github.io/post-images/1607569943906.jpg" alt="" loading="lazy"></p>
+<h4 id="使用流程">使用流程</h4>
+<figure data-type="image" tabindex="4"><img src="https://zwangsheng.github.io/post-images/1607570035989.jpg" alt="" loading="lazy"></figure>
+<h3 id="countdownlatch">CountDownLatch</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570621061.jpg" alt="" loading="lazy"><br>
+线程等待其他线程完成工作之后才开始进行<br>
+通过一个计数器进行实现，每当一个线程完成任务就进行-1，到达0之后，使用了await()方法的线程就可以往下运行<br>
+只能用一次</p>
+<h3 id="cyclicbarrier">CyclicBarrier</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570628459.jpg" alt="" loading="lazy"><br>
+等待所有线程到达以后，进行放行<br>
+线程达到后调用await()告诉CyclicBarrier已到达，然后将阻塞<br>
+可以传入barrierAction，用来所有线程都到达之后先执行这块代码再放行<br>
+允许反复使用</p>
+<h3 id="semaphore">Semaphore</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570752314.jpg" alt="" loading="lazy"><br>
+一般拿来做流控<br>
+acquire() 获取许可证<br>
+release() 归还许可证</p>
+<h3 id="exchange">Exchange</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570893818.jpg" alt="" loading="lazy"><br>
+用于线程之间的数据交换，提供一个同步点，在这个同步点，允许线程相互交换数据<br>
+一个线程调用exchange()，会等待第二个线程也执行exchange()</p>
+<h3 id="原子类atomic">原子类Atomic</h3>
+<p>利用CAS，volatile进行保证原子性</p>
+<h3 id="reentrantlock">ReentrantLock</h3>
+<p>显示加锁<br>
+可重入，公平非公平靠参数控制，响应式中断<br>
+state 保证可重入<br>
+fair 控制公平非公平<br>
+读写锁的实现通过16位偏移</p>
+<h4 id="读写锁的升降级">读写锁的升降级</h4>
+<p>在持有写锁的过程中，获得读锁，然后释放写锁</p>
+<h3 id="locksupport">LockSupport</h3>
+<p>定义了公共的静态方法，提供了基本的线程阻塞和唤醒功能</p>
+<h3 id="clh">CLH</h3>
+<p>队列锁是一种基于链表的可扩展，高性能，公平的自旋锁<br>
+申请的线程仅仅只在本地变量上自旋，不断的轮询前驱节点的状态，前一个节点释放锁了，就结束轮询获得锁</p>
+<h4 id="clh流程">CLH流程</h4>
+<ol>
+<li>创建一个Node，将标识位locked设为true，有一个myPred标识前驱节点</li>
+<li>对CLH的tail调用GetAndSet方法，CAS的让自己成为队列的尾部，同时获得前驱引用</li>
+<li>轮询前驱节点的locked变成了false，前驱节点被回收，自己成为前驱节点，同时获得锁</li>
+</ol>
+<h3 id="aqs">AQS</h3>
+<p>int 成员变量state作为同步状态，内置的FIFO队列来完成线程的排队，Node存放线程信息</p>
+<h2 id="cas">CAS</h2>
+<p><img src="https://zwangsheng.github.io/post-images/1607571107049.jpg" alt="" loading="lazy"><br>
+获取期望值，在更新之前，判断期望值是不是符合，符合就进行操作</p>
+<h3 id="aba问题">ABA问题</h3>
+<p>中间发生了变化，但是结果相同，操作不可知<br>
+解决办法，加上版本号</p>
+<h3 id="循环时间长开销大">循环时间长开销大</h3>
+<p>CAS长期自旋，给CPU带来压力</p>
+<h3 id="只能保证一个共享变量的原子操作">只能保证一个共享变量的原子操作</h3>
+<h2 id="并发容器">并发容器</h2>
+<h4 id="17-hashmap扩容死循环">1.7 HashMap扩容死循环</h4>
+<p>多个线程进行扩容的时候，一个线程完成了扩容，链表为倒序，另一个把倒序变成了正序，前后相连，形成了环状，当get一个不存在的元素就回无限循环</p>
+<h3 id="18-concurrenthashmap">1.8 ConcurrentHashMap</h3>
+<p>取消了segments，采用 transient volatile HashEntry&lt;K,V&gt;[] table 进行存储，降低了锁粒度，采用CAS和synchronized来保证安全<br>
+将原先 table 数组+单向链表的数据结构，变更为 table 数组+单 向链表+红黑树的结构</p>
+<h4 id="concurrenthashmap初始化只需要一个线程">ConcurrentHashMap初始化只需要一个线程</h4>
+<h4 id="采取多线程的扩容">采取多线程的扩容</h4>
+<h3 id="concurrentskiplist">ConcurrentSkipList</h3>
+<p>跳表</p>
+<h3 id="concurrentlinkedqueue">ConcurrentLinkedQueue</h3>
+<p>LinkedList的并发版本</p>
+<h2 id="写时复制容器">写时复制容器</h2>
+<p>写入的时候复制一份数据进行写，这时候读到的还是老的数据，保证最终一致<br>
+注意复制的内存开销</p>
+<h2 id="阻塞队列">阻塞队列</h2>
+<p>插入的时候满了阻塞<br>
+取的时候空了阻塞</p>
+<h3 id="生产者消费者模式">生产者消费者模式</h3>
+<p>生产者和消费者不直接通讯，通过阻塞队列进行通讯，阻塞队列相当于缓冲区，平衡了生产者消费者的能力</p>
+<h2 id="线程池">线程池</h2>
+<ol>
+<li>资源消耗降低</li>
+<li>提高响应速度</li>
+<li>提高线程的可管理性</li>
+</ol>
+<h3 id="corepoolsize-线程池核心线程数">corePoolSize 线程池核心线程数</h3>
+<h3 id="maximumpoolsize-线程池最大线程数">maximumPoolSize 线程池最大线程数</h3>
+<h3 id="keepalivetime-线程空闲存活时间对非核心线程才生效">keepAliveTime 线程空闲存活时间，对非核心线程才生效</h3>
+<h3 id="workqueue-保存工作的阻塞队列">workQueue 保存工作的阻塞队列</h3>
+<h3 id="threadfactory-创建线程的工厂">threadFactory 创建线程的工厂</h3>
+<h3 id="rejectedexecutionhandler-拒绝策略阻塞队列满了且达到最大线程数时执行的策略">RejectedExecutionHandler 拒绝策略，阻塞队列满了且达到最大线程数时执行的策略</h3>
+<h3 id="线程池工作机制">线程池工作机制</h3>
+<ol>
+<li>当前线程少于核心数，就造核心线程</li>
+<li>当前线程等于核心数，任务塞进阻塞队列</li>
+<li>阻塞队列满了，开新的线程处理</li>
+<li>线程数达到最大线程数，采取拒绝策略</li>
+</ol>
+<h3 id="execute-无返回值的提交">execute() 无返回值的提交</h3>
+<h3 id="submit有返回值的提交">submit()有返回值的提交</h3>
+<h3 id="shutdown-设置线程池状态shutdown中断所有没在执行的线程">shutdown() 设置线程池状态SHUTDOWN，中断所有没在执行的线程</h3>
+<h3 id="shutdownnow-设置线程状态stop尝试关闭所有线程返回还在做的列表">shutdownNow() 设置线程状态STOP，尝试关闭所有线程，返回还在做的列表</h3>
+<h3 id="isshutdown-并不能代表线程池真的完全关闭">isShutdown() 并不能代表线程池真的完全关闭</h3>
+<h3 id="isterminaed-线程池完全关闭">isTerminaed() 线程池完全关闭</h3>
+<h4 id="cpu密集型-分配-cpu-1线程的线程池">CPU密集型 分配 CPU + 1线程的线程池</h4>
+<h4 id="io密集型-分配cpu-2线程的线程池">IO密集型 分配CPU * 2线程的线程池</h4>
+<h4 id="fixedthreadpool-固定线程数的线程池-有界队列">FixedThreadPool 固定线程数的线程池 有界队列</h4>
+<h4 id="singlethreadexecutor-单线程线程池-有界队列">SingleThreadExecutor 单线程线程池 有界队列</h4>
+<h4 id="cachedthreadpool-缓存线程池无核心线程数无边界队列极端情况下会炸">CachedThreadPool 缓存线程池，无核心线程数，无边界队列，极端情况下会炸</h4>
+<h4 id="workstealingpool-工作窃取具体看forkjoin">WorkStealingPool 工作窃取，具体看forkJoin</h4>
+<h4 id="scheduledthreadpoolexecutor-定时任务线程池下面还有具体实现">ScheduledThreadPoolExecutor 定时任务线程池，下面还有具体实现</h4>
+<h2 id="并发安全">并发安全</h2>
+<h3 id="线程封闭">线程封闭</h3>
+<p>对象逃不出这个线程</p>
+<h3 id="无状态的类">无状态的类</h3>
+<h3 id="不可变类">不可变类</h3>
+<p>不提供修改的方法</p>
+<h3 id="volatile-2">volatile</h3>
+<p>保证可见，不保证原子</p>
+<h3 id="加锁和-cas">加锁和 CAS</h3>
+<h3 id="安全的发布">安全的发布</h3>
+<p>发布变量的副本或者线程安全修饰过的对象</p>
+<h3 id="theadlocal">TheadLocal</h3>
+<h2 id="死锁">死锁</h2>
+<p>两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信 而造成的一种阻塞的现象</p>
+<h3 id="死锁条件">死锁条件</h3>
+<ol>
+<li>互斥条件 排他使用</li>
+<li>请求和保持 要新的又不放旧的</li>
+<li>不剥夺条件 不能强制占有，只能等着主动释放</li>
+<li>环路等待条件 形成了环</li>
+</ol>
+<h3 id="银行家算法">银行家算法</h3>
+<h3 id="解决">解决</h3>
+<p>通过 jps 查询应用的 id，再通过 jstack id 查看应用的锁的持有情况<br>
+采用尝试拿锁的机制</p>
+<h2 id="活锁-线程相互谦让拿到锁以后请求另一把锁谦让">活锁 线程相互谦让，拿到锁以后请求另一把锁谦让</h2>
+<h2 id="线程饥饿-低优先级的拿不到cpu">线程饥饿 低优先级的拿不到CPU</h2>
+<h2 id="并发性能">并发性能</h2>
+<h3 id="线程上下文切换的开销">线程上下文切换的开销</h3>
+<h3 id="内存同步-加锁等线程安全操作会抑制jvm的优化">内存同步 加锁等线程安全操作会抑制JVM的优化</h3>
+<h3 id="长时间阻塞">长时间阻塞</h3>
+<h3 id="减少锁的竞争">减少锁的竞争</h3>
+<ol>
+<li>减小锁粒度</li>
+<li>减小锁范围</li>
+<li>避免多余的锁</li>
+<li>共享锁替代独占锁</li>
+</ol>
+<h2 id="单例模式">单例模式</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E6%98%AF%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E4%BD%8D">进程 进程是程序运行资源分配的最小单位</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B-%E7%BA%BF%E7%A8%8B%E6%98%AFcpu%E8%B0%83%E5%BA%A6%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E4%BD%8D%E9%9C%80%E8%A6%81%E4%BE%9D%E8%B5%96%E8%BF%9B%E7%A8%8B%E5%AD%98%E5%9C%A8">线程 线程是CPU调度的最小单位，需要依赖进程存在</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91-%E4%BA%A4%E6%9B%BF%E8%BF%90%E8%A1%8C%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4">并发 交替运行，单位时间</a></li>
+<li><a href="#%E5%B9%B6%E8%A1%8C-%E5%90%8C%E6%97%B6%E8%BF%9B%E8%A1%8C">并行 同时进行</a></li>
+<li><a href="#%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B-%E4%B8%80%E8%88%AC%E6%98%AF%E6%94%AF%E6%8C%81%E6%80%A7%E7%BA%BF%E7%A8%8B%E5%81%9A%E8%BE%85%E5%8A%A9%E5%B7%A5%E4%BD%9C%E5%BD%93%E4%B8%8D%E5%AD%98%E5%9C%A8%E9%9D%9E%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%97%B6jvm%E8%87%AA%E5%8A%A8%E7%BB%93%E6%9D%9F">守护线程 一般是支持性线程，做辅助工作，当不存在非守护线程的线程时，JVM自动结束</a></li>
+<li><a href="#cpu%E6%97%B6%E9%97%B4%E7%89%87%E8%BD%AE%E8%BD%AC%E6%9C%BA%E5%88%B6">CPU时间片轮转机制</a></li>
+<li><a href="#run">run()</a></li>
+<li><a href="#start">start()</a></li>
+<li><a href="#yield">yield()</a></li>
+<li><a href="#sleep">sleep()</a></li>
+<li><a href="#join">join()</a></li>
+<li><a href="#wait">wait()</a></li>
+<li><a href="#notify">notify()</a></li>
+<li><a href="#notifyall">notifyAll()</a></li>
+<li><a href="#%E6%8A%A2%E5%8D%A0%E5%BC%8F%E8%B0%83%E5%BA%A6-%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5">抢占式调度 系统通知</a></li>
+<li><a href="#%E5%8D%8F%E5%90%8C%E5%BC%8F%E8%B0%83%E5%BA%A6-%E7%BA%BF%E7%A8%8B%E6%9C%AC%E8%BA%AB%E6%8E%A7%E5%88%B6%E9%80%9A%E7%9F%A5%E7%B3%BB%E7%BB%9F%E8%BF%9B%E8%A1%8C%E5%88%87%E6%8D%A2">协同式调度 线程本身控制，通知系统进行切换</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB">线程共享</a>
+<ul>
+<li><a href="#synchronized">synchronized</a>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E9%94%81">对象锁</a></li>
+<li><a href="#%E7%B1%BB%E9%94%81">类锁</a></li>
+<li><a href="#%E9%94%81%E8%86%A8%E8%83%80">锁膨胀</a></li>
+</ul>
+</li>
+<li><a href="#volatile">volatile</a></li>
+<li><a href="#threadlocal">ThreadLocal</a>
+<ul>
+<li><a href="#threadlocal%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98">ThreadLocal可能存在的内存泄漏问题</a>
+<ul>
+<li><a href="#%E5%A6%82%E6%9E%9Cthreadlocal%E7%9A%84%E5%AE%9E%E4%BE%8B%E4%B8%8Ekey%E4%B8%BA%E5%BC%BA%E5%BC%95%E7%94%A8%E9%82%A3%E4%B9%88%E5%BD%93%E6%A0%88%E4%B8%8A%E7%9A%84threadlocalref%E4%B8%8D%E5%86%8D%E6%8C%87%E5%90%91threadlocal%E4%B9%8B%E5%90%8Ekey%E4%B8%8Ethreadlocal%E8%BF%98%E6%98%AF%E5%BC%BA%E5%BC%95%E7%94%A8%E4%BE%9D%E7%84%B6%E9%80%A0%E6%88%90%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F">如果ThreadLocal的实例与key为强引用，那么当栈上的ThreadLocalRef不再指向ThreadLocal之后，key与ThreadLocal还是强引用，依然造成内存泄漏</a></li>
+<li><a href="#%E5%A6%82%E6%9E%9Cthreadlocal%E7%9A%84%E5%AE%9E%E4%BE%8B%E4%B8%8Ekey%E4%B8%BA%E5%BC%B1%E5%BC%95%E7%94%A8%E9%82%A3%E5%9C%A8%E6%8E%A5%E4%B8%8B%E6%9D%A5%E7%9A%84setgetremove%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E8%BF%98%E6%9C%89%E5%8F%AF%E8%83%BD%E5%AF%B9key%E4%B8%BAnull%E7%9A%84value%E8%BF%9B%E8%A1%8C%E6%B8%85%E9%99%A4">如果ThreadLocal的实例与key为弱引用，那在接下来的set，get，remove的过程中还有可能对key为null的value进行清除</a></li>
+<li><a href="#%E6%89%80%E4%BB%A5%E6%A0%B9%E6%BA%90%E5%B9%B6%E4%B8%8D%E6%98%AF%E5%BC%B1%E5%BC%95%E7%94%A8%E8%80%8C%E6%98%AFthreadlocalmap%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E7%BA%BF%E7%A8%8B%E4%B8%80%E6%A0%B7%E9%95%BF%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%8F%8A%E6%97%B6%E5%88%A0%E9%99%A4%E5%AF%B9%E5%BA%94%E7%9A%84key%E5%B0%B1%E5%9B%9E%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F">所以根源并不是弱引用，而是ThreadLocalMap的生命周期和线程一样长，如果不及时删除对应的key就回导致内存泄漏</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C">线程协作</a>
+<ul>
+<li><a href="#%E7%AD%89%E5%BE%85%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6">等待通知机制</a>
+<ul>
+<li><a href="#%E7%AD%89%E5%BE%85%E6%96%B9">等待方</a></li>
+<li><a href="#%E9%80%9A%E7%9F%A5%E6%96%B9">通知方</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E7%9A%84%E5%B7%A5%E5%85%B7%E7%B1%BB">线程并发的工具类</a>
+<ul>
+<li><a href="#forkjoin">ForkJoin</a>
+<ul>
+<li><a href="#recursiveaction%E7%94%A8%E4%BA%8E%E6%B2%A1%E6%9C%89%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E7%9A%84%E4%BB%BB%E5%8A%A1">RecursiveAction，用于没有返回结果的任务</a></li>
+<li><a href="#recursivetask%E7%94%A8%E4%BA%8E%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E4%BB%BB%E5%8A%A1">RecursiveTask，用于有返回值的任务</a></li>
+<li><a href="#%E5%B7%A5%E4%BD%9C%E5%AF%86%E5%8F%96">工作密取</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B">使用流程</a></li>
+</ul>
+</li>
+<li><a href="#countdownlatch">CountDownLatch</a></li>
+<li><a href="#cyclicbarrier">CyclicBarrier</a></li>
+<li><a href="#semaphore">Semaphore</a></li>
+<li><a href="#exchange">Exchange</a></li>
+<li><a href="#%E5%8E%9F%E5%AD%90%E7%B1%BBatomic">原子类Atomic</a></li>
+<li><a href="#reentrantlock">ReentrantLock</a>
+<ul>
+<li><a href="#%E8%AF%BB%E5%86%99%E9%94%81%E7%9A%84%E5%8D%87%E9%99%8D%E7%BA%A7">读写锁的升降级</a></li>
+</ul>
+</li>
+<li><a href="#locksupport">LockSupport</a></li>
+<li><a href="#clh">CLH</a>
+<ul>
+<li><a href="#clh%E6%B5%81%E7%A8%8B">CLH流程</a></li>
+</ul>
+</li>
+<li><a href="#aqs">AQS</a></li>
+</ul>
+</li>
+<li><a href="#cas">CAS</a>
+<ul>
+<li><a href="#aba%E9%97%AE%E9%A2%98">ABA问题</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E6%97%B6%E9%97%B4%E9%95%BF%E5%BC%80%E9%94%80%E5%A4%A7">循环时间长开销大</a></li>
+<li><a href="#%E5%8F%AA%E8%83%BD%E4%BF%9D%E8%AF%81%E4%B8%80%E4%B8%AA%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E7%9A%84%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C">只能保证一个共享变量的原子操作</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8">并发容器</a><br>
+*
+<ul>
+<li><a href="#17-hashmap%E6%89%A9%E5%AE%B9%E6%AD%BB%E5%BE%AA%E7%8E%AF">1.7 HashMap扩容死循环</a></li>
+<li><a href="#18-concurrenthashmap">1.8 ConcurrentHashMap</a>
+<ul>
+<li><a href="#concurrenthashmap%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%AA%E9%9C%80%E8%A6%81%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B">ConcurrentHashMap初始化只需要一个线程</a></li>
+<li><a href="#%E9%87%87%E5%8F%96%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A9%E5%AE%B9">采取多线程的扩容</a></li>
+</ul>
+</li>
+<li><a href="#concurrentskiplist">ConcurrentSkipList</a></li>
+<li><a href="#concurrentlinkedqueue">ConcurrentLinkedQueue</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6%E5%AE%B9%E5%99%A8">写时复制容器</a></li>
+<li><a href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97">阻塞队列</a>
+<ul>
+<li><a href="#%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F">生产者消费者模式</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0">线程池</a>
+<ul>
+<li><a href="#corepoolsize-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A0%B8%E5%BF%83%E7%BA%BF%E7%A8%8B%E6%95%B0">corePoolSize 线程池核心线程数</a></li>
+<li><a href="#maximumpoolsize-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%80%E5%A4%A7%E7%BA%BF%E7%A8%8B%E6%95%B0">maximumPoolSize 线程池最大线程数</a></li>
+<li><a href="#keepalivetime-%E7%BA%BF%E7%A8%8B%E7%A9%BA%E9%97%B2%E5%AD%98%E6%B4%BB%E6%97%B6%E9%97%B4%E5%AF%B9%E9%9D%9E%E6%A0%B8%E5%BF%83%E7%BA%BF%E7%A8%8B%E6%89%8D%E7%94%9F%E6%95%88">keepAliveTime 线程空闲存活时间，对非核心线程才生效</a></li>
+<li><a href="#workqueue-%E4%BF%9D%E5%AD%98%E5%B7%A5%E4%BD%9C%E7%9A%84%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97">workQueue 保存工作的阻塞队列</a></li>
+<li><a href="#threadfactory-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%B7%A5%E5%8E%82">threadFactory 创建线程的工厂</a></li>
+<li><a href="#rejectedexecutionhandler-%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E6%BB%A1%E4%BA%86%E4%B8%94%E8%BE%BE%E5%88%B0%E6%9C%80%E5%A4%A7%E7%BA%BF%E7%A8%8B%E6%95%B0%E6%97%B6%E6%89%A7%E8%A1%8C%E7%9A%84%E7%AD%96%E7%95%A5">RejectedExecutionHandler 拒绝策略，阻塞队列满了且达到最大线程数时执行的策略</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6">线程池工作机制</a></li>
+<li><a href="#execute-%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%8F%90%E4%BA%A4">execute() 无返回值的提交</a></li>
+<li><a href="#submit%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%8F%90%E4%BA%A4">submit()有返回值的提交</a></li>
+<li><a href="#shutdown-%E8%AE%BE%E7%BD%AE%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%8A%B6%E6%80%81shutdown%E4%B8%AD%E6%96%AD%E6%89%80%E6%9C%89%E6%B2%A1%E5%9C%A8%E6%89%A7%E8%A1%8C%E7%9A%84%E7%BA%BF%E7%A8%8B">shutdown() 设置线程池状态SHUTDOWN，中断所有没在执行的线程</a></li>
+<li><a href="#shutdownnow-%E8%AE%BE%E7%BD%AE%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81stop%E5%B0%9D%E8%AF%95%E5%85%B3%E9%97%AD%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%E8%BF%94%E5%9B%9E%E8%BF%98%E5%9C%A8%E5%81%9A%E7%9A%84%E5%88%97%E8%A1%A8">shutdownNow() 设置线程状态STOP，尝试关闭所有线程，返回还在做的列表</a></li>
+<li><a href="#isshutdown-%E5%B9%B6%E4%B8%8D%E8%83%BD%E4%BB%A3%E8%A1%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9C%9F%E7%9A%84%E5%AE%8C%E5%85%A8%E5%85%B3%E9%97%AD">isShutdown() 并不能代表线程池真的完全关闭</a></li>
+<li><a href="#isterminaed-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AE%8C%E5%85%A8%E5%85%B3%E9%97%AD">isTerminaed() 线程池完全关闭</a>
+<ul>
+<li><a href="#cpu%E5%AF%86%E9%9B%86%E5%9E%8B-%E5%88%86%E9%85%8D-cpu-1%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0">CPU密集型 分配 CPU + 1线程的线程池</a></li>
+<li><a href="#io%E5%AF%86%E9%9B%86%E5%9E%8B-%E5%88%86%E9%85%8Dcpu-2%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0">IO密集型 分配CPU * 2线程的线程池</a></li>
+<li><a href="#fixedthreadpool-%E5%9B%BA%E5%AE%9A%E7%BA%BF%E7%A8%8B%E6%95%B0%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E6%9C%89%E7%95%8C%E9%98%9F%E5%88%97">FixedThreadPool 固定线程数的线程池 有界队列</a></li>
+<li><a href="#singlethreadexecutor-%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E6%9C%89%E7%95%8C%E9%98%9F%E5%88%97">SingleThreadExecutor 单线程线程池 有界队列</a></li>
+<li><a href="#cachedthreadpool-%E7%BC%93%E5%AD%98%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%A0%E6%A0%B8%E5%BF%83%E7%BA%BF%E7%A8%8B%E6%95%B0%E6%97%A0%E8%BE%B9%E7%95%8C%E9%98%9F%E5%88%97%E6%9E%81%E7%AB%AF%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E7%82%B8">CachedThreadPool 缓存线程池，无核心线程数，无边界队列，极端情况下会炸</a></li>
+<li><a href="#workstealingpool-%E5%B7%A5%E4%BD%9C%E7%AA%83%E5%8F%96%E5%85%B7%E4%BD%93%E7%9C%8Bforkjoin">WorkStealingPool 工作窃取，具体看forkJoin</a></li>
+<li><a href="#scheduledthreadpoolexecutor-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%B8%8B%E9%9D%A2%E8%BF%98%E6%9C%89%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">ScheduledThreadPoolExecutor 定时任务线程池，下面还有具体实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8">并发安全</a>
+<ul>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%B0%81%E9%97%AD">线程封闭</a></li>
+<li><a href="#%E6%97%A0%E7%8A%B6%E6%80%81%E7%9A%84%E7%B1%BB">无状态的类</a></li>
+<li><a href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB">不可变类</a></li>
+<li><a href="#volatile-2">volatile</a></li>
+<li><a href="#%E5%8A%A0%E9%94%81%E5%92%8C-cas">加锁和 CAS</a></li>
+<li><a href="#%E5%AE%89%E5%85%A8%E7%9A%84%E5%8F%91%E5%B8%83">安全的发布</a></li>
+<li><a href="#theadlocal">TheadLocal</a></li>
+</ul>
+</li>
+<li><a href="#%E6%AD%BB%E9%94%81">死锁</a>
+<ul>
+<li><a href="#%E6%AD%BB%E9%94%81%E6%9D%A1%E4%BB%B6">死锁条件</a></li>
+<li><a href="#%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95">银行家算法</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3">解决</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B4%BB%E9%94%81-%E7%BA%BF%E7%A8%8B%E7%9B%B8%E4%BA%92%E8%B0%A6%E8%AE%A9%E6%8B%BF%E5%88%B0%E9%94%81%E4%BB%A5%E5%90%8E%E8%AF%B7%E6%B1%82%E5%8F%A6%E4%B8%80%E6%8A%8A%E9%94%81%E8%B0%A6%E8%AE%A9">活锁 线程相互谦让，拿到锁以后请求另一把锁谦让</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E9%A5%A5%E9%A5%BF-%E4%BD%8E%E4%BC%98%E5%85%88%E7%BA%A7%E7%9A%84%E6%8B%BF%E4%B8%8D%E5%88%B0cpu">线程饥饿 低优先级的拿不到CPU</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%80%A7%E8%83%BD">并发性能</a>
+<ul>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%E7%9A%84%E5%BC%80%E9%94%80">线程上下文切换的开销</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%90%8C%E6%AD%A5-%E5%8A%A0%E9%94%81%E7%AD%89%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%93%8D%E4%BD%9C%E4%BC%9A%E6%8A%91%E5%88%B6jvm%E7%9A%84%E4%BC%98%E5%8C%96">内存同步 加锁等线程安全操作会抑制JVM的优化</a></li>
+<li><a href="#%E9%95%BF%E6%97%B6%E9%97%B4%E9%98%BB%E5%A1%9E">长时间阻塞</a></li>
+<li><a href="#%E5%87%8F%E5%B0%91%E9%94%81%E7%9A%84%E7%AB%9E%E4%BA%89">减少锁的竞争</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">单例模式</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/jvm/">
+              <h3 class="post-title">
+                JVM
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

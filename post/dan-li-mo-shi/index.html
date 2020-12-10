@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>单例模式 | Gridea</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1607589496773">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="单例模式 | Gridea - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="非线程安全的懒汉模式
+package Singleton;
+
+/**
+ * 非线程安全的懒汉模式
+ * @author:wangSheng
+ * @date:2020/12/10 4:21 下午
+ */
+public class Singl..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1607589496773" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              单例模式
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-10
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="非线程安全的懒汉模式">非线程安全的懒汉模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 非线程安全的懒汉模式
+ * @author:wangSheng
+ * @date:2020/12/10 4:21 下午
+ */
+public class Singleton1 {
+    /**
+     * 启动快，用的时候才加载，无锁
+     * 不是线程安全的
+     */
+    private static Singleton1 singleton = null;
+
+    private Singleton1() {
+    }
+
+    public static Singleton1 getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton1();
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="线程安全的懒汉">线程安全的懒汉</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 安全的懒汉
+ * @author:wangSheng
+ * @date:2020/12/10 4:22 下午
+ */
+public class Singleton2 {
+    /**
+     * 启动快，用的时候才加载，线程安全
+     * 获得实例需要串行获得
+     */
+    private static Singleton2 singleton = null;
+
+    private Singleton2() {
+    }
+
+    public static synchronized Singleton2 getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton2();
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id=""></h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * DCL懒汉
+ * @author:wangSheng
+ * @date:2020/12/10 4:24 下午
+ */
+public class Singleton3 {
+    /**
+     * 启动快，用的时候才加载，线程安全
+     * 注意加上volatile，保证可见性
+     */
+    private volatile static Singleton3 singleton = null;
+
+    private Singleton3() {
+
+    }
+
+    public static Singleton3 getInstance() {
+        if(singleton == null) {
+            synchronized (Singleton3.class) {
+                if (singleton == null) {
+                    singleton = new Singleton3();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="饿汉模式">饿汉模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 饿汉模式
+ * @author:wangSheng
+ * @date:2020/12/10 4:28 下午
+ */
+public class Singleton4 {
+    /**
+     * 使用无需等待获取
+     * 一开始就加载如果不用的话占据内存
+     */
+    private static Singleton4 singleton = new Singleton4();
+
+    private Singleton4() {
+    }
+
+    public static Singleton4 getInstance() {
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="holder模式">Holder模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * @author:wangSheng
+ * @date:2020/12/10 4:29 下午
+ */
+public class Singleton5 {
+    /**
+     * 只有被调用才会进行加载，static只会加载一次，由JVM保证安全
+     */
+    private static class SingletonHolder {
+        private static final Singleton5 singleton = new Singleton5();
+    }
+
+    private Singleton5() {
+
+    }
+
+    public static Singleton5 getInstance() {
+        return SingletonHolder.singleton;
+    }
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E9%9D%9E%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%87%92%E6%B1%89%E6%A8%A1%E5%BC%8F">非线程安全的懒汉模式</a></li>
+<li><a href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%87%92%E6%B1%89">线程安全的懒汉</a></li>
+<li></li>
+<li><a href="#%E9%A5%BF%E6%B1%89%E6%A8%A1%E5%BC%8F">饿汉模式</a></li>
+<li><a href="#holder%E6%A8%A1%E5%BC%8F">Holder模式</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/java-xian-cheng-zai-yun-xing-tai-jiu-jing-shi-nei-he-tai-huan-shi-yong-hu-tai/">
+              <h3 class="post-title">
+                Java线程在运行态究竟是内核态还是用户态？
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

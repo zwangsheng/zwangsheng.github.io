@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>Gridea</title>
-    <updated>2020-12-09T09:29:06.335Z</updated>
+    <updated>2020-12-10T08:38:22.937Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,6 +10,144 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[单例模式]]></title>
+        <id>https://zwangsheng.github.io/post/dan-li-mo-shi/</id>
+        <link href="https://zwangsheng.github.io/post/dan-li-mo-shi/">
+        </link>
+        <updated>2020-12-10T08:10:49.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="非线程安全的懒汉模式">非线程安全的懒汉模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 非线程安全的懒汉模式
+ * @author:wangSheng
+ * @date:2020/12/10 4:21 下午
+ */
+public class Singleton1 {
+    /**
+     * 启动快，用的时候才加载，无锁
+     * 不是线程安全的
+     */
+    private static Singleton1 singleton = null;
+
+    private Singleton1() {
+    }
+
+    public static Singleton1 getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton1();
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="线程安全的懒汉">线程安全的懒汉</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 安全的懒汉
+ * @author:wangSheng
+ * @date:2020/12/10 4:22 下午
+ */
+public class Singleton2 {
+    /**
+     * 启动快，用的时候才加载，线程安全
+     * 获得实例需要串行获得
+     */
+    private static Singleton2 singleton = null;
+
+    private Singleton2() {
+    }
+
+    public static synchronized Singleton2 getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton2();
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id=""></h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * DCL懒汉
+ * @author:wangSheng
+ * @date:2020/12/10 4:24 下午
+ */
+public class Singleton3 {
+    /**
+     * 启动快，用的时候才加载，线程安全
+     * 注意加上volatile，保证可见性
+     */
+    private volatile static Singleton3 singleton = null;
+
+    private Singleton3() {
+
+    }
+
+    public static Singleton3 getInstance() {
+        if(singleton == null) {
+            synchronized (Singleton3.class) {
+                if (singleton == null) {
+                    singleton = new Singleton3();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="饿汉模式">饿汉模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * 饿汉模式
+ * @author:wangSheng
+ * @date:2020/12/10 4:28 下午
+ */
+public class Singleton4 {
+    /**
+     * 使用无需等待获取
+     * 一开始就加载如果不用的话占据内存
+     */
+    private static Singleton4 singleton = new Singleton4();
+
+    private Singleton4() {
+    }
+
+    public static Singleton4 getInstance() {
+        return singleton;
+    }
+}
+</code></pre>
+<h1 id="holder模式">Holder模式</h1>
+<pre><code class="language-java">package Singleton;
+
+/**
+ * @author:wangSheng
+ * @date:2020/12/10 4:29 下午
+ */
+public class Singleton5 {
+    /**
+     * 只有被调用才会进行加载，static只会加载一次，由JVM保证安全
+     */
+    private static class SingletonHolder {
+        private static final Singleton5 singleton = new Singleton5();
+    }
+
+    private Singleton5() {
+
+    }
+
+    public static Singleton5 getInstance() {
+        return SingletonHolder.singleton;
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Java线程在运行态究竟是内核态还是用户态？]]></title>
         <id>https://zwangsheng.github.io/post/java-xian-cheng-zai-yun-xing-tai-jiu-jing-shi-nei-he-tai-huan-shi-yong-hu-tai/</id>
@@ -55,6 +193,239 @@ ex.线程的park方法，对应OS的某个函数，切换到内核态<br>
 <p>分场景<br>
 如果两个线程属于不同的进程，那么切换就像进程上下文切换一样<br>
 如果两个线程属于同一个进程，那么切换的时候，虚拟内存不动，只需要切换线程私有的资源即可</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[并发编程]]></title>
+        <id>https://zwangsheng.github.io/post/bing-fa-bian-cheng/</id>
+        <link href="https://zwangsheng.github.io/post/bing-fa-bian-cheng/">
+        </link>
+        <updated>2020-12-09T07:44:30.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="进程-进程是程序运行资源分配的最小单位">进程 进程是程序运行资源分配的最小单位</h2>
+<h2 id="线程-线程是cpu调度的最小单位需要依赖进程存在">线程 线程是CPU调度的最小单位，需要依赖进程存在</h2>
+<h2 id="并发-交替运行单位时间">并发 交替运行，单位时间</h2>
+<h2 id="并行-同时进行">并行 同时进行</h2>
+<h2 id="守护线程-一般是支持性线程做辅助工作当不存在非守护线程的线程时jvm自动结束">守护线程 一般是支持性线程，做辅助工作，当不存在非守护线程的线程时，JVM自动结束</h2>
+<h2 id="cpu时间片轮转机制">CPU时间片轮转机制</h2>
+<p>CPU将时间切片，给进程分配时间，如果时间片用尽，CPU将分配给其他进程，如果时间片没用尽就阻塞或结束，CPU也会进行转换<br>
+因为进程的上下文切换需要消耗资源，所以存在时间片时长的问题<br>
+如果时间片太小，那么每次做完都会进行上下文切换，CPU的时间很大一部分浪费在切换上<br>
+如果时间片太长，交互请求会变差</p>
+<h2 id="run">run()</h2>
+<p>业务逻辑实现的地方，调用后不会开启新的线程来处理，当作一个普通方法使用</p>
+<h2 id="start">start()</h2>
+<p>让一个线程进入队列等待CPU，分配到CPU以后会执行run()方法，不可重复执行</p>
+<h2 id="yield">yield()</h2>
+<p>让当前线程让出CPU使用权，不会释放锁资源，让出后立刻进入就绪状态，可能被立刻选中</p>
+<h2 id="sleep">sleep()</h2>
+<p>线程进入休眠，不会释放锁资源</p>
+<h2 id="join">join()</h2>
+<p>把指定线程加入到当前线程，将交替运行的线程改为顺序进行<br>
+B线程调用了A线程的join，直到A执行完，B才能继续执行</p>
+<h2 id="wait">wait()</h2>
+<p>线程进入WAITING状态，只有等待另外线程通知，被中断或者超时才会返回，会释放锁</p>
+<h2 id="notify">notify()</h2>
+<p>通知在对象上等待的一个线程，让其从wait上返回，如果获得锁就运行，没获得就进入WAITING状态</p>
+<h2 id="notifyall">notifyAll()</h2>
+<p>通知对象上等待的所有线程</p>
+<h2 id="抢占式调度-系统通知">抢占式调度 系统通知</h2>
+<h2 id="协同式调度-线程本身控制通知系统进行切换">协同式调度 线程本身控制，通知系统进行切换</h2>
+<h2 id="线程共享">线程共享</h2>
+<h3 id="synchronized">synchronized</h3>
+<h4 id="对象锁">对象锁</h4>
+<ol>
+<li>同步代码块，锁住对象实例</li>
+<li>加在方法上</li>
+</ol>
+<h4 id="类锁">类锁</h4>
+<ol>
+<li>同步代码块，锁住类</li>
+<li>加在静态方法上</li>
+</ol>
+<h4 id="锁膨胀">锁膨胀</h4>
+<h3 id="volatile">volatile</h3>
+<p>保证不同线程对修饰变量的可见性，但不能保证原子性</p>
+<h3 id="threadlocal">ThreadLocal</h3>
+<p>ThreadLocal为所有线程提供变量副本<br>
+每个线程内部维护了一个ThreadLocalMap，key 是 ThreadLocal的实例<br>
+<img src="https://zwangsheng.github.io/post-images/1607567891869.jpg" alt="" loading="lazy"></p>
+<h4 id="threadlocal可能存在的内存泄漏问题">ThreadLocal可能存在的内存泄漏问题</h4>
+<p><img src="https://zwangsheng.github.io/post-images/1607568021890.jpg" alt="" loading="lazy"><br>
+key 与 ThreadLocal实例是弱引用，一旦发生GC就会被回收<br>
+那么ThreadLocalMap就回存在key为null的value，无法被访问到，可能会造成内存泄漏<br>
+只有currentThread结束，才能被回收</p>
+<h5 id="如果threadlocal的实例与key为强引用那么当栈上的threadlocalref不再指向threadlocal之后key与threadlocal还是强引用依然造成内存泄漏">如果ThreadLocal的实例与key为强引用，那么当栈上的ThreadLocalRef不再指向ThreadLocal之后，key与ThreadLocal还是强引用，依然造成内存泄漏</h5>
+<h5 id="如果threadlocal的实例与key为弱引用那在接下来的setgetremove的过程中还有可能对key为null的value进行清除">如果ThreadLocal的实例与key为弱引用，那在接下来的set，get，remove的过程中还有可能对key为null的value进行清除</h5>
+<h5 id="所以根源并不是弱引用而是threadlocalmap的生命周期和线程一样长如果不及时删除对应的key就回导致内存泄漏">所以根源并不是弱引用，而是ThreadLocalMap的生命周期和线程一样长，如果不及时删除对应的key就回导致内存泄漏</h5>
+<h2 id="线程协作">线程协作</h2>
+<h3 id="等待通知机制">等待通知机制</h3>
+<h4 id="等待方">等待方</h4>
+<figure data-type="image" tabindex="1"><img src="https://zwangsheng.github.io/post-images/1607568845504.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>获得锁</li>
+<li>条件不满足就wait，醒了以后还得检查条件</li>
+<li>条件满足进入业务</li>
+</ol>
+<h4 id="通知方">通知方</h4>
+<figure data-type="image" tabindex="2"><img src="https://zwangsheng.github.io/post-images/1607568853831.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>获得锁</li>
+<li>改变条件</li>
+<li>通知所有等待的线程</li>
+</ol>
+<h2 id="线程并发的工具类">线程并发的工具类</h2>
+<h3 id="forkjoin">ForkJoin</h3>
+<figure data-type="image" tabindex="3"><img src="https://zwangsheng.github.io/post-images/1607569806881.jpg" alt="" loading="lazy"></figure>
+<h4 id="recursiveaction用于没有返回结果的任务">RecursiveAction，用于没有返回结果的任务</h4>
+<h4 id="recursivetask用于有返回值的任务">RecursiveTask，用于有返回值的任务</h4>
+<h4 id="工作密取">工作密取</h4>
+<p>线程工作复杂度不同，有的线程先完成任务，那么从别的线程的队列头开始取工作完成<br>
+<img src="https://zwangsheng.github.io/post-images/1607569943906.jpg" alt="" loading="lazy"></p>
+<h4 id="使用流程">使用流程</h4>
+<figure data-type="image" tabindex="4"><img src="https://zwangsheng.github.io/post-images/1607570035989.jpg" alt="" loading="lazy"></figure>
+<h3 id="countdownlatch">CountDownLatch</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570621061.jpg" alt="" loading="lazy"><br>
+线程等待其他线程完成工作之后才开始进行<br>
+通过一个计数器进行实现，每当一个线程完成任务就进行-1，到达0之后，使用了await()方法的线程就可以往下运行<br>
+只能用一次</p>
+<h3 id="cyclicbarrier">CyclicBarrier</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570628459.jpg" alt="" loading="lazy"><br>
+等待所有线程到达以后，进行放行<br>
+线程达到后调用await()告诉CyclicBarrier已到达，然后将阻塞<br>
+可以传入barrierAction，用来所有线程都到达之后先执行这块代码再放行<br>
+允许反复使用</p>
+<h3 id="semaphore">Semaphore</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570752314.jpg" alt="" loading="lazy"><br>
+一般拿来做流控<br>
+acquire() 获取许可证<br>
+release() 归还许可证</p>
+<h3 id="exchange">Exchange</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607570893818.jpg" alt="" loading="lazy"><br>
+用于线程之间的数据交换，提供一个同步点，在这个同步点，允许线程相互交换数据<br>
+一个线程调用exchange()，会等待第二个线程也执行exchange()</p>
+<h3 id="原子类atomic">原子类Atomic</h3>
+<p>利用CAS，volatile进行保证原子性</p>
+<h3 id="reentrantlock">ReentrantLock</h3>
+<p>显示加锁<br>
+可重入，公平非公平靠参数控制，响应式中断<br>
+state 保证可重入<br>
+fair 控制公平非公平<br>
+读写锁的实现通过16位偏移</p>
+<h4 id="读写锁的升降级">读写锁的升降级</h4>
+<p>在持有写锁的过程中，获得读锁，然后释放写锁</p>
+<h3 id="locksupport">LockSupport</h3>
+<p>定义了公共的静态方法，提供了基本的线程阻塞和唤醒功能</p>
+<h3 id="clh">CLH</h3>
+<p>队列锁是一种基于链表的可扩展，高性能，公平的自旋锁<br>
+申请的线程仅仅只在本地变量上自旋，不断的轮询前驱节点的状态，前一个节点释放锁了，就结束轮询获得锁</p>
+<h4 id="clh流程">CLH流程</h4>
+<ol>
+<li>创建一个Node，将标识位locked设为true，有一个myPred标识前驱节点</li>
+<li>对CLH的tail调用GetAndSet方法，CAS的让自己成为队列的尾部，同时获得前驱引用</li>
+<li>轮询前驱节点的locked变成了false，前驱节点被回收，自己成为前驱节点，同时获得锁</li>
+</ol>
+<h3 id="aqs">AQS</h3>
+<p>int 成员变量state作为同步状态，内置的FIFO队列来完成线程的排队，Node存放线程信息</p>
+<h2 id="cas">CAS</h2>
+<p><img src="https://zwangsheng.github.io/post-images/1607571107049.jpg" alt="" loading="lazy"><br>
+获取期望值，在更新之前，判断期望值是不是符合，符合就进行操作</p>
+<h3 id="aba问题">ABA问题</h3>
+<p>中间发生了变化，但是结果相同，操作不可知<br>
+解决办法，加上版本号</p>
+<h3 id="循环时间长开销大">循环时间长开销大</h3>
+<p>CAS长期自旋，给CPU带来压力</p>
+<h3 id="只能保证一个共享变量的原子操作">只能保证一个共享变量的原子操作</h3>
+<h2 id="并发容器">并发容器</h2>
+<h4 id="17-hashmap扩容死循环">1.7 HashMap扩容死循环</h4>
+<p>多个线程进行扩容的时候，一个线程完成了扩容，链表为倒序，另一个把倒序变成了正序，前后相连，形成了环状，当get一个不存在的元素就回无限循环</p>
+<h3 id="18-concurrenthashmap">1.8 ConcurrentHashMap</h3>
+<p>取消了segments，采用 transient volatile HashEntry&lt;K,V&gt;[] table 进行存储，降低了锁粒度，采用CAS和synchronized来保证安全<br>
+将原先 table 数组+单向链表的数据结构，变更为 table 数组+单 向链表+红黑树的结构</p>
+<h4 id="concurrenthashmap初始化只需要一个线程">ConcurrentHashMap初始化只需要一个线程</h4>
+<h4 id="采取多线程的扩容">采取多线程的扩容</h4>
+<h3 id="concurrentskiplist">ConcurrentSkipList</h3>
+<p>跳表</p>
+<h3 id="concurrentlinkedqueue">ConcurrentLinkedQueue</h3>
+<p>LinkedList的并发版本</p>
+<h2 id="写时复制容器">写时复制容器</h2>
+<p>写入的时候复制一份数据进行写，这时候读到的还是老的数据，保证最终一致<br>
+注意复制的内存开销</p>
+<h2 id="阻塞队列">阻塞队列</h2>
+<p>插入的时候满了阻塞<br>
+取的时候空了阻塞</p>
+<h3 id="生产者消费者模式">生产者消费者模式</h3>
+<p>生产者和消费者不直接通讯，通过阻塞队列进行通讯，阻塞队列相当于缓冲区，平衡了生产者消费者的能力</p>
+<h2 id="线程池">线程池</h2>
+<ol>
+<li>资源消耗降低</li>
+<li>提高响应速度</li>
+<li>提高线程的可管理性</li>
+</ol>
+<h3 id="corepoolsize-线程池核心线程数">corePoolSize 线程池核心线程数</h3>
+<h3 id="maximumpoolsize-线程池最大线程数">maximumPoolSize 线程池最大线程数</h3>
+<h3 id="keepalivetime-线程空闲存活时间对非核心线程才生效">keepAliveTime 线程空闲存活时间，对非核心线程才生效</h3>
+<h3 id="workqueue-保存工作的阻塞队列">workQueue 保存工作的阻塞队列</h3>
+<h3 id="threadfactory-创建线程的工厂">threadFactory 创建线程的工厂</h3>
+<h3 id="rejectedexecutionhandler-拒绝策略阻塞队列满了且达到最大线程数时执行的策略">RejectedExecutionHandler 拒绝策略，阻塞队列满了且达到最大线程数时执行的策略</h3>
+<h3 id="线程池工作机制">线程池工作机制</h3>
+<ol>
+<li>当前线程少于核心数，就造核心线程</li>
+<li>当前线程等于核心数，任务塞进阻塞队列</li>
+<li>阻塞队列满了，开新的线程处理</li>
+<li>线程数达到最大线程数，采取拒绝策略</li>
+</ol>
+<h3 id="execute-无返回值的提交">execute() 无返回值的提交</h3>
+<h3 id="submit有返回值的提交">submit()有返回值的提交</h3>
+<h3 id="shutdown-设置线程池状态shutdown中断所有没在执行的线程">shutdown() 设置线程池状态SHUTDOWN，中断所有没在执行的线程</h3>
+<h3 id="shutdownnow-设置线程状态stop尝试关闭所有线程返回还在做的列表">shutdownNow() 设置线程状态STOP，尝试关闭所有线程，返回还在做的列表</h3>
+<h3 id="isshutdown-并不能代表线程池真的完全关闭">isShutdown() 并不能代表线程池真的完全关闭</h3>
+<h3 id="isterminaed-线程池完全关闭">isTerminaed() 线程池完全关闭</h3>
+<h4 id="cpu密集型-分配-cpu-1线程的线程池">CPU密集型 分配 CPU + 1线程的线程池</h4>
+<h4 id="io密集型-分配cpu-2线程的线程池">IO密集型 分配CPU * 2线程的线程池</h4>
+<h4 id="fixedthreadpool-固定线程数的线程池-有界队列">FixedThreadPool 固定线程数的线程池 有界队列</h4>
+<h4 id="singlethreadexecutor-单线程线程池-有界队列">SingleThreadExecutor 单线程线程池 有界队列</h4>
+<h4 id="cachedthreadpool-缓存线程池无核心线程数无边界队列极端情况下会炸">CachedThreadPool 缓存线程池，无核心线程数，无边界队列，极端情况下会炸</h4>
+<h4 id="workstealingpool-工作窃取具体看forkjoin">WorkStealingPool 工作窃取，具体看forkJoin</h4>
+<h4 id="scheduledthreadpoolexecutor-定时任务线程池下面还有具体实现">ScheduledThreadPoolExecutor 定时任务线程池，下面还有具体实现</h4>
+<h2 id="并发安全">并发安全</h2>
+<h3 id="线程封闭">线程封闭</h3>
+<p>对象逃不出这个线程</p>
+<h3 id="无状态的类">无状态的类</h3>
+<h3 id="不可变类">不可变类</h3>
+<p>不提供修改的方法</p>
+<h3 id="volatile-2">volatile</h3>
+<p>保证可见，不保证原子</p>
+<h3 id="加锁和-cas">加锁和 CAS</h3>
+<h3 id="安全的发布">安全的发布</h3>
+<p>发布变量的副本或者线程安全修饰过的对象</p>
+<h3 id="theadlocal">TheadLocal</h3>
+<h2 id="死锁">死锁</h2>
+<p>两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信 而造成的一种阻塞的现象</p>
+<h3 id="死锁条件">死锁条件</h3>
+<ol>
+<li>互斥条件 排他使用</li>
+<li>请求和保持 要新的又不放旧的</li>
+<li>不剥夺条件 不能强制占有，只能等着主动释放</li>
+<li>环路等待条件 形成了环</li>
+</ol>
+<h3 id="银行家算法">银行家算法</h3>
+<h3 id="解决">解决</h3>
+<p>通过 jps 查询应用的 id，再通过 jstack id 查看应用的锁的持有情况<br>
+采用尝试拿锁的机制</p>
+<h2 id="活锁-线程相互谦让拿到锁以后请求另一把锁谦让">活锁 线程相互谦让，拿到锁以后请求另一把锁谦让</h2>
+<h2 id="线程饥饿-低优先级的拿不到cpu">线程饥饿 低优先级的拿不到CPU</h2>
+<h2 id="并发性能">并发性能</h2>
+<h3 id="线程上下文切换的开销">线程上下文切换的开销</h3>
+<h3 id="内存同步-加锁等线程安全操作会抑制jvm的优化">内存同步 加锁等线程安全操作会抑制JVM的优化</h3>
+<h3 id="长时间阻塞">长时间阻塞</h3>
+<h3 id="减少锁的竞争">减少锁的竞争</h3>
+<ol>
+<li>减小锁粒度</li>
+<li>减小锁范围</li>
+<li>避免多余的锁</li>
+<li>共享锁替代独占锁</li>
+</ol>
+<h2 id="单例模式">单例模式</h2>
 ]]></content>
     </entry>
     <entry>
