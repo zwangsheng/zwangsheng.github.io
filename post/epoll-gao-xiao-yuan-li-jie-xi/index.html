@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Epoll高效原理解析 | -wangSheng-</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1608011106517">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Epoll高效原理解析 | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="进程调用epoll_Create方法的时候，linux内核会创建出一个eventpoll的结构体，在内核的cache当中建立一个红黑树存储epoll_ctx传输过来的socket，还会建立一个rdllist双向链表，存放准备就绪的事件。
+调..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1608011106517" alt="">
+  </a>
+  <h1 class="site-title">
+    -wangSheng-
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Epoll高效原理解析
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-15
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>进程调用epoll_Create方法的时候，linux内核会创建出一个eventpoll的结构体，在内核的cache当中建立一个红黑树存储epoll_ctx传输过来的socket，还会建立一个rdllist双向链表，存放准备就绪的事件。<br>
+调用epoll_select的时候，判断rdllist是否为空即可，有数据就返回，没有就sleep，时间到了也返回。<br>
+同时，所有添加到epoll的事件都会和外设建立回调的关系，也就是外设感应到事件就会调用这些回调函数，<br>
+叫做ep_poll_callback，这样子的事件也会被放在rdllist当中。<br>
+当调用epoll_wait检查有无发生事件的连接的时候，只检查rdllist有无epitem元素，如果不为空，就复制时间到用户空间（可以使用内核用户共享内存提高效率），同时返回数量给用户。<br>
+<img src="https://zwangsheng.github.io/post-images/1608004833881.jpg" alt="" loading="lazy"><br>
+将功能进行拆分<br>
+select当中维护等待队列和阻塞进程是一个函数，<br>
+epoll进行拆分，拆分为epoll_ctl维护等待队列，epoll_wait阻塞进程<br>
+维护就绪列表<br>
+select在select阻塞的时候遍历一遍socket列表，发现有感兴趣事件之后交由进程处理，进程不知道哪个socket，所以需要两遍遍历socket列表<br>
+epoll维护了rdllist，里面存放了就绪的socket免得遍历<br>
+<img src="https://zwangsheng.github.io/post-images/1608010906772.jpg" alt="" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/netty/">
+              <h3 class="post-title">
+                Netty
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Writed By wangSheng
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
