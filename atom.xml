@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>-wangSheng-</title>
-    <updated>2020-12-10T09:41:06.558Z</updated>
+    <updated>2020-12-15T03:40:58.739Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,6 +10,481 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, -wangSheng-</rights>
+    <entry>
+        <title type="html"><![CDATA[Netty]]></title>
+        <id>https://zwangsheng.github.io/post/netty/</id>
+        <link href="https://zwangsheng.github.io/post/netty/">
+        </link>
+        <updated>2020-12-14T08:28:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="计算机网络">计算机网络</h2>
+<h3 id="tcpip模型">TCP/IP模型</h3>
+<p><img src="https://zwangsheng.github.io/post-images/1607934666294.jpg" alt="" loading="lazy"><br>
+<img src="https://zwangsheng.github.io/post-images/1607934809530.jpg" alt="" loading="lazy"></p>
+<h3 id="mac地址-48位">MAC地址 -48位</h3>
+<p>物理地址<br>
+写在网卡里，算不可变的地址<br>
+链路层</p>
+<h3 id="ip地址-32位">IP地址 -32位</h3>
+<p>逻辑地址<br>
+互联网上的每一个网络和每一台主机配置一个唯一的逻辑地址<br>
+网络层</p>
+<h3 id="tcp">TCP</h3>
+<p>端到端的通讯，面向连接<br>
+在开始通讯前，要建立连接，完成通讯后关闭连接<br>
+可靠的数据流服务</p>
+<h4 id="超时重传机制">超时重传机制</h4>
+<p>超时的时长并不是固定死的，通过网路情况动态调整，RRT</p>
+<h4 id="应答确认机制">应答确认机制</h4>
+<h4 id="滑动窗口">滑动窗口</h4>
+<h4 id="三次握手">三次握手</h4>
+<figure data-type="image" tabindex="1"><img src="https://zwangsheng.github.io/post-images/1607935548404.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>Client 将SYN标志位置1，产生随机数seq=j，将数据包发给Sever，Client进入SYN_SENT状态</li>
+<li>Sever收到SYN为1的包，知道Client要建立连接，将标志位SYN和ACK都置1，ack=j+1，随机产生seq=k，发送给Client，Sever进入SYN_RCVD状态（sever确认自己的接收无误）</li>
+<li>Client收到确认包，检查ack的值是否为j+1，ACK是否为1，如果正确的话（client确认自己的发送和接受无误），ACK置1，ack=k+1，将数据包传给Sever，Client进入ESTABLISHED，Sever检查ack的值是否为k+1，ACK是否为1，没问题的话（sever确认自己的发送无误），Sever进入ESTABLISHED，之后客户端和服务端可以开始数据传输</li>
+</ol>
+<h5 id="为什么一定要握手三次">为什么一定要握手三次</h5>
+<p>因为TCP为了保证可靠传输，所以TCP通讯的双方都要维护序列号，三次是双方都可知序列号的最小次数。</p>
+<h5 id="三次握手带来的洪泛攻击">三次握手带来的洪泛攻击</h5>
+<p>攻击者假造ip地址发送给Sever端进行第一次握手，那么Sever端会进行回应，那么因为ip是伪造的，所以不会进行第三次的握手，Sever端的资源就会一直被握手所拖垮，有效的请求就很难获取到Sever的资源</p>
+<h6 id="无效连接监视释放-对于所有的连接都进行监控到达一定的阀值之后断开">无效连接监视释放 对于所有的连接都进行监控，到达一定的阀值之后断开</h6>
+<h6 id="延缓-tcb-分配方法-延缓资源的分配等真的建立了再分配">延缓 TCB 分配方法 延缓资源的分配，等真的建立了再分配</h6>
+<h6 id="使用防火墙-防火墙确认连接的真实性之后才会发起真的syn">使用防火墙 防火墙确认连接的真实性之后才会发起真的SYN</h6>
+<h4 id="四次挥手">四次挥手</h4>
+<figure data-type="image" tabindex="2"><img src="https://zwangsheng.github.io/post-images/1607935554881.jpg" alt="" loading="lazy"></figure>
+<ol>
+<li>甲方主动执行关闭，发送FIN为1的给乙方，甲方进入FIN-WAIT-1</li>
+<li>乙方收到FIN为1的报文，进入被动执行关闭，发出ACK为1的报文，乙方进入CLOSE-WAIT，甲方收到报文进入FIN-WAIT-2</li>
+<li>乙方主动执行关闭，发送FIn为1的给甲方</li>
+<li>甲方接受报文，并发出应答，进入TIME_WAIT阶段，经历2*MSL进入CLOSE状态</li>
+<li>乙方接受报文，直接进入CLOSE状态</li>
+</ol>
+<h5 id="为什么挥手要四次">为什么挥手要四次</h5>
+<p>TCP是全双工的，需要双方都关闭读写</p>
+<h5 id="为什么需要time_wait状态">为什么需要TIME_WAIT状态</h5>
+<ol>
+<li>保证可靠的终止TCP连接 - ack报文丢失，重发fin报文</li>
+<li>保证让迟来的TCP报文有足够的时间被识别并丢弃 - 给足够的时间关闭报文，linux的端口复用</li>
+</ol>
+<h3 id="http">HTTP</h3>
+<h4 id="一次完整的http请求">一次完整的HTTP请求</h4>
+<ol>
+<li>进行DNS域名解析（本地浏览器缓存，操作系统缓存，hosts文件，域名服务器）</li>
+<li>TCP三次握手</li>
+<li>客户端发起HTTP请求</li>
+<li>服务端响应HTTP请求</li>
+<li>客户端解析HTML代码，请求资源</li>
+<li>客户端渲染</li>
+<li>关闭TCP连接</li>
+</ol>
+<h4 id="http请求报文">HTTP请求报文</h4>
+<figure data-type="image" tabindex="3"><img src="https://zwangsheng.github.io/post-images/1607938293504.jpg" alt="" loading="lazy"></figure>
+<h4 id="http响应报文">HTTP响应报文</h4>
+<figure data-type="image" tabindex="4"><img src="https://zwangsheng.github.io/post-images/1607938304215.jpg" alt="" loading="lazy"></figure>
+<h2 id="java原生网络">Java原生网络</h2>
+<h3 id="bio">BIO</h3>
+<p>由一个独立的Acceptor线程处理连接，接受请求以后，产生新的线程处理，处理完成后，返回应答，销毁线程（一请求一应答模型）数据的读入和写出都阻塞在一个线程里<br>
+面向流 需要读取完流内数据，不能前后移动<br>
+阻塞 直到read或者wirte完之前不能处理其他事</p>
+<h3 id="nio">NIO</h3>
+<p>面向缓冲区 数据总是从channel到buffer或者从buffer到channel<br>
+非阻塞</p>
+<h4 id="nio架构">NIO架构</h4>
+<figure data-type="image" tabindex="5"><img src="https://zwangsheng.github.io/post-images/1607940889871.jpg" alt="" loading="lazy"></figure>
+<h4 id="selector-选择器">Selector 选择器</h4>
+<p>一个线程控制Selector可以监控多个channel</p>
+<h4 id="channel-通道">Channel 通道</h4>
+<p>通道中的数据总是要先读到一个 Buffer，或者总是要从一个 Buffer 中写入</p>
+<h4 id="buffer">Buffer</h4>
+<p>将数据写入缓冲，再通过通道把缓冲的数据发送出去，读也是一样， 数据总是先从通道读到缓冲，应用程序再读缓冲的数据</p>
+<h5 id="capacity-容量">capacity 容量</h5>
+<h5 id="position-写模式下代表当前可写的位置读模式代表当前可读的位置">position 写模式下，代表当前可写的位置，读模式代表当前可读的位置</h5>
+<h5 id="limit-写模式下代表还能写容量读模式代表当前最大可读的位置">limit 写模式下，代表还能写容量，读模式代表当前最大可读的位置</h5>
+<h5 id="直接内存">直接内存</h5>
+<p>HeapByteBuffer直接分配的在堆上，flush到远程的时候还需要copy到直接内存<br>
+直接内存可能会造成OOM<br>
+申请空间耗费性能，但是IO操作要优于堆内存</p>
+<h5 id="向buffer写内容">向Buffer写内容</h5>
+<ol>
+<li>从Channel读取到Buffer</li>
+<li>通过Buffer的put方法读取到Buffer</li>
+</ol>
+<h5 id="从buffer读取内容">从Buffer读取内容</h5>
+<ol>
+<li>从Buffer读取到Channel</li>
+<li>通过get方法从Buffer读取</li>
+</ol>
+<h5 id="flip">flip()</h5>
+<p>把Buffer从读模式切换到写模式，postion设为0，limit设置为postion</p>
+<h5 id="clear">clear()</h5>
+<p>清除整个缓冲区<br>
+postion为0，limit变为caption</p>
+<h5 id="rewind">rewind()</h5>
+<p>postion设为0，limit还是旧值，可以从头开始读取数据</p>
+<h5 id="compact">compact()</h5>
+<p>清除读过的缓冲区<br>
+将未读数据拷贝到开始的地方，postion变为未读的结尾，limit变为caption</p>
+<h5 id="equals">equals()</h5>
+<p>只比较剩余的数据</p>
+<h4 id="selectionkey">SelectionKey</h4>
+<p>selectionKey 代表channel和selector建立的关系<br>
+channel移除selectionKey的时候，取消的selectionKey并不是直接从selector中移除，而是添加到cancelledKeys当中，等到下次操作才会移除他<br>
+<img src="https://zwangsheng.github.io/post-images/1607941741704.jpg" alt="" loading="lazy"></p>
+<h3 id="rpc">RPC</h3>
+<h4 id="rpc调用流程">RPC调用流程</h4>
+<ol>
+<li>Client以本地的方式使用存根</li>
+<li>Client stub 收到使用之后，负责把类名，方法名，参数包装，通过网络发送给Sever</li>
+<li>Sever收到消息以后，将代理存根解码之</li>
+<li>Server stub调用解码后的数据，进行本地调用，将结果编码发送给Client stub</li>
+<li>Client stub收到消息，解码，给Client结果</li>
+</ol>
+<h4 id="实现rpc需要解决的问题">实现RPC需要解决的问题</h4>
+<ol>
+<li>代理问题</li>
+<li>序列化问题</li>
+<li>通信问题</li>
+<li>服务的实例化</li>
+<li>服务的上下线的可知性</li>
+</ol>
+<h3 id="reactor-模式">Reactor 模式</h3>
+<h4 id="单线程模式的reactor">单线程模式的Reactor</h4>
+<ol>
+<li>注册一个Acceptor时间处理器到Reactor中，监听客户端向服务端发起的连接请求</li>
+<li>Reactor监听到ACCEPT事件，交由Acceptor处理，Acceptor处理器通过accpet获得对应的连接，然后该链接会关注READ事件以及对READ事件的处理方法</li>
+<li>当Reactor监听到read和write事件会交由对应的处理器处理</li>
+<li>处理完所有IO之后，会执行select方法阻塞到下个事件到来<br>
+<img src="https://zwangsheng.github.io/post-images/1607948794153.jpg" alt="" loading="lazy"></li>
+</ol>
+<h4 id="单线程模式的reactor工作线程池">单线程模式的Reactor+工作线程池</h4>
+<p>非IO操作的从Reactor线程中移出交由工作线程池执行<br>
+<img src="https://zwangsheng.github.io/post-images/1607948802093.jpg" alt="" loading="lazy"></p>
+<h4 id="多reactor线程">多Reactor线程</h4>
+<p>每一个Reactor都有自己的Selector，线程池，分发事件循环逻辑<br>
+mainReactor只有一个，但是subReactor一般有多个<br>
+mainReactor线程负责接受客户端的连接请求，然后将接受到的SocketChannel传递给subReactor，有Reactor来负责进行通讯</p>
+<ol>
+<li>注册Acceptor事件处理器到mainReactor中，Acceptor关注ACCEPT事件，mainReactor监听连接请求</li>
+<li>客户端发起请求，Acceptor监听到请求，开启SocketChannel，并传递给subReactor</li>
+<li>subReactor线程池分配一个subReator给这个SocketChannel，将Read事件和处理器注册到subReacotr当中</li>
+<li>当IO事件就绪，IO线程有subReactor处理，业务逻辑放到线程池处理<br>
+<img src="https://zwangsheng.github.io/post-images/1607949267608.jpg" alt="" loading="lazy"></li>
+</ol>
+<h4 id="观察者模式和reacotr的区别">观察者模式和Reacotr的区别</h4>
+<p>观察者模式主要是一个或者多个对象依赖于一个对象，当对象改变的时候进行通知<br>
+区别在于观察者关注一个事件，Reactor关注多个事件</p>
+<h2 id="netty">Netty</h2>
+<h3 id="内置通讯方式">内置通讯方式</h3>
+<ol>
+<li>NIO nio</li>
+<li>EPOLL 基于linux，完全非阻塞</li>
+<li>OIO 阻塞流</li>
+<li>Local VM内部通道</li>
+<li>Embedded 单元测试</li>
+</ol>
+<h3 id="为什么要用netty">为什么要用Netty</h3>
+<ol>
+<li>Java nio虽然提供多路复用IO，但是没有很好的封装</li>
+<li>NIO的类库太过复杂</li>
+<li>一个好的网络程序还需要很多上层的特殊服务</li>
+<li>Java nio存在空轮训的bug</li>
+</ol>
+<h3 id="channel">Channel</h3>
+<p>代表一个到实体的开放连接，打开和关闭可以被看作连接和断开连接<br>
+为了保证顺序，所以实现了CompComparable接口，如果不同的channel返回相同的hashCode就回抛错</p>
+<h4 id="channel的生命周期">Channel的生命周期</h4>
+<ol>
+<li>ChannelUnregistered Channel被创建，但是未注册到EventLoop上</li>
+<li>ChannelRegistered Channel被注册到EventLoop上</li>
+<li>ChannelActive Channel处于活动状态，已经连接到远程节点上了，可以进行传输数据</li>
+<li>ChannelInactive Channel未连接到远程节点</li>
+</ol>
+<h3 id="eventloop">EventLoop</h3>
+<p>可以看作一个线程<br>
+控制流，多线程处理，并发<br>
+用于处理网络连接生命周期内所发生的事件<br>
+在Netty4，所有的IO操作和事件都会被分配给EventLoop的Thread执行<br>
+一旦一个Channel被分配给一个EventLoop，那么在Channel的生命周期内都会使用这个EventLoop的线程</p>
+<h3 id="eventloopgroup">EventLoopGroup</h3>
+<p>看作一个线程组<br>
+通过round-robin顺序循环为Channel分配EventLoop达到一个均衡的分配</p>
+<h3 id="channelhandler">ChannelHandler</h3>
+<p>充当入站或者出出站数据逻辑的容器</p>
+<h4 id="channelhandler的生命周期">ChannelHandler的生命周期</h4>
+<ol>
+<li>handlerAdded 当把 ChannelHandler 添加到 ChannelPipeline 中时被调用 handlerRemoved 当从</li>
+<li>ChannelPipeline 中移除 ChannelHandler 时被调用</li>
+<li>exceptionCaught 当处理过程中在 ChannelPipeline 中有错误产生时被调用</li>
+</ol>
+<h4 id="channelinboundhandler">ChannelInboundHandler</h4>
+<p>处理入站数据以及各种状态变化</p>
+<h5 id="channelinboundhandler响应事件">ChannelInboundHandler响应事件</h5>
+<ol>
+<li>channelRegistered 当 Channel 已经注册到它的 EventLoop 并且能够处理 I/O 时被调用</li>
+<li>channelUnregistered 当 Channel 从它的 EventLoop 注销并且无法处理任何 I/O 时被调<br>
+用</li>
+<li>channelActive 当 Channel 处于活动状态时被调用;Channel 已经连接/绑定并且已经就 绪</li>
+<li>channelInactive 当 Channel 离开活动状态并且不再连接它的远程节点时被调用</li>
+<li>channelReadComplete 当 Channel 上的一个读操作完成时被调用</li>
+<li>channelRead 当从 Channel 读取数据时被调用</li>
+<li>ChannelWritabilityChanged 当 Channel 的可写状态发生改变时被调用 可以调整阀值</li>
+<li>userEventTriggered 当 ChannelnboundHandler.fireUserEventTriggered()方法被调用时被 调用</li>
+</ol>
+<h4 id="channeloutboundhandler">ChannelOutboundHandler</h4>
+<p>处理出站数据并且允许拦截所有的操作</p>
+<h5 id="channeloutboundhandler响应事件">ChannelOutboundHandler响应事件</h5>
+<ol>
+<li>bind(ChannelHandlerContext,SocketAddress,ChannelPromise) 当请求将 Channel 绑定到本地地址时被调用</li>
+<li>connect(ChannelHandlerContext,SocketAddress,SocketAddress,ChannelPromise) 当请求将 Channel 连接到远程节点时被调用</li>
+<li>disconnect(ChannelHandlerContext,ChannelPromise) 当请求将 Channel 从远程节点断开时被调用</li>
+<li>close(ChannelHandlerContext,ChannelPromise) 当请求关闭 Channel 时被调用</li>
+<li>deregister(ChannelHandlerContext,ChannelPromise) 当请求将 Channel 从它的 EventLoop 注销时被调用</li>
+<li>read(ChannelHandlerContext) 当请求从 Channel 读取更多的数据时被调用</li>
+<li>flush(ChannelHandlerContext) 当请求通过 Channel 将入队数据冲刷到远程节点时被调 用</li>
+<li>write(ChannelHandlerContext,Object,ChannelPromise) 当请求通过 Channel 将数据写到 远程节点时被调用</li>
+</ol>
+<h4 id="netty资源管理">Netty资源管理</h4>
+<p>Write时，如果确保数据被发送网络，Netty会自己释放Buffer，但是如果OutHandler处理了write方法并且丢弃了数据，那么需要自己进行释放<br>
+Read时，如果确保每个InHandler向后传递了数据，那么Netty也会帮忙释放数据，但是如果处理数据却没有后传数据，需要自己释放<br>
+这些都有可能会造成内存泄漏</p>
+<h4 id="simplechannelinboundhandler">SimpleChannelInboundHandler</h4>
+<p>数据被channelRead0方法消费之后自动释放<br>
+所以在我们实现业务Inhandler的时候要注意，要么继续向后传递，要么原地释放</p>
+<h3 id="channelpipeline">ChannelPipeline</h3>
+<p>Channel被创建的时候会关联一个ChannelPipeline，这个关联是永久的<br>
+事件经过ChannelPipeline是ChannelHandler的工作，他们的执行顺序是由他们被添加的顺序所决定的<br>
+消息或者入站事件被读取，那么会从ChannelPipeline的头部开始流动，到达尾部就处理完毕<br>
+出站事件和消息，会从尾部流向头部，最终达到网络，通常会触发一个写操作<br>
+<img src="https://zwangsheng.github.io/post-images/1607957231284.jpg" alt="" loading="lazy"></p>
+<h3 id="channelhandlercontext">ChannelHandlerContext</h3>
+<p>ChannelHandlerContext代表ChannelHandler和ChannelPipeline的关系<br>
+每当有ChannelHandler被添加进ChannelPipeline都会创建一个ChannelHandlerContext<br>
+主要功能是管理它所关联的Channelhandler在和同一个ChannelPipeline其他ChannelHandler的交互<br>
+有很多方法，有一些相同的方法也会存在Channel和ChannelPipeline当中，但是有很重要的不同，Channel或者ChanelPipeline的方法会从头走到尾，ChannelHandlerContext的方法会从自己管理的ChannelHandler开始，然后只会传播给上一个或者下一个能处理本时间的ChannelHandler<br>
+<img src="https://zwangsheng.github.io/post-images/1607957787166.jpg" alt="" loading="lazy"></p>
+<h3 id="channeloption">ChannelOption</h3>
+<h4 id="channeloptionso_backlog-指定连接等待队列的大小">ChannelOption.SO_BACKLOG 指定连接等待队列的大小</h4>
+<p>服务端处理客户端的请求是按照顺序处理的，暂时处理不了的放进队列</p>
+<h4 id="channeloptionso_reuseaddr-允许重复使用本地地址和端口">ChannelOption.SO_REUSEADDR 允许重复使用本地地址和端口</h4>
+<p>一个进程非正常退出后，内核需要一定的时间释放端口，设置这个可以正常使用端口</p>
+<h4 id="channeloptionso_keepalive-测试连接的状态">ChannelOption.SO_KEEPALIVE 测试连接的状态</h4>
+<p>并不是长链接，一般是长时间之后，进行发送探活报文</p>
+<h4 id="channeloptionso_sndbuf-接受缓冲区大小">ChannelOption.SO_SNDBUF 接受缓冲区大小</h4>
+<p>保存接受的数据，直到读取成功</p>
+<h4 id="channeloptionso_rcvbuf-发送缓冲区大小">ChannelOption.SO_RCVBUF 发送缓冲区大小</h4>
+<p>保存发送数据，直到发送完成</p>
+<h4 id="channeloptionso_linger-阻塞close方法确保数据发送完毕">ChannelOption.SO_LINGER 阻塞close方法，确保数据发送完毕</h4>
+<p>linux内核遇到close方法，会尽量发送数据，但不确保发送完全，这个参数可以阻塞close方法，直到发送完</p>
+<h4 id="channeloptiontcp_nodelay-用于小数据即时发送一定程度上解决粘包">ChannelOption.TCP_NODELAY 用于小数据即时发送，一定程度上解决粘包</h4>
+<p>Nagle会判断数据包太小的时候，等待封装成足够大的包再进行发送，提高了网络的负载，但是会造成延迟发送</p>
+<h3 id="channelfuture">ChannelFuture</h3>
+<p>执行异步操作的结果返回<br>
+可以添加ChannelFutureListener，以便在这个操作完成的时候得到通知，无论成功还是失败</p>
+<h3 id="bytbuf">BytBuf</h3>
+<h4 id="优点">优点</h4>
+<ol>
+<li>可以被用户自定义的缓冲区扩展</li>
+<li>通过内置的复合缓冲区实现了透明的零拷贝</li>
+<li>容量可以按需扩展</li>
+<li>不需要flip方法进行读写模式的切换</li>
+<li>读写用了不同的索引</li>
+<li>支持方法的链式调用</li>
+<li>支持引用计数</li>
+<li>支持池化</li>
+</ol>
+<h4 id="使用模式">使用模式</h4>
+<h5 id="堆缓冲区">堆缓冲区</h5>
+<p>数据存储在JVM运行时数据区，能提供没有池化最快的分配和释放，通过检查是否由数组支撑来判断是不是堆缓冲区</p>
+<h5 id="直接缓冲区">直接缓冲区</h5>
+<p>基于堆外内存，分配和释放代价较大</p>
+<h5 id="复合缓冲区">复合缓冲区</h5>
+<p>将多个ByteBuf整合成一个，进行统一的Api管理</p>
+<h4 id="分配">分配</h4>
+<h5 id="bytebufallocator">ByteBufAllocator</h5>
+<p>通过ByteBufAllocator的方法获得不同类型的ByteBuf<br>
+Channel或者ChannelHandlerContext<br>
+通过alloc获得不同类型的byteBuf<br>
+Nettyti gong提供两种ByteBufAllocator的实现</p>
+<h6 id="pooledbytebufallocator-池化-默认实现">PooledByteBufAllocator 池化 默认实现</h6>
+<p>池化实例，提高内存的利用率</p>
+<h6 id="unpooled-bytebufallocator-非池化">Unpooled-ByteBufAllocator 非池化</h6>
+<h5 id="unpooled">Unpooled</h5>
+<p>提供静态方法来提供创建非池化的ByteBuf<br>
+每一次都整个实例，方便</p>
+<h6 id="get-set">get set</h6>
+<p>从给定索引开始，不会移动索引的进行获取数据</p>
+<h6 id="read-write">read write</h6>
+<p>从给索引开始，会移动索引</p>
+<h5 id="可丢弃字节">可丢弃字节</h5>
+<p>已经读过的字节，可以通过discardReadBytes，丢弃他们回收空间<br>
+调用之后，原来的空就是可写空间<br>
+频繁的调用确实可以保证可写分段的最大化，但是这可能造成内存的复制</p>
+<h5 id="可读字节">可读字节</h5>
+<p>默认为0<br>
+<img src="https://zwangsheng.github.io/post-images/1607960282036.jpg" alt="" loading="lazy"></p>
+<h5 id="可写字节">可写字节</h5>
+<p>默认为0，从当前的writeIndex开始增加<br>
+<img src="https://zwangsheng.github.io/post-images/1607960364203.jpg" alt="" loading="lazy"></p>
+<h5 id="索引管理">索引管理</h5>
+<p>通过mark和rest方法来标记和重置<br>
+也可以通过index参数进行移动索引<br>
+clear将索引置0但是不会清除数据</p>
+<h5 id="查找操作">查找操作</h5>
+<p>indexOf<br>
+forEachByte</p>
+<h5 id="派生缓冲区">派生缓冲区</h5>
+<p>拥有自己的索引，内部数据共享</p>
+<h5 id="引用计数">引用计数</h5>
+<h5 id="工具类">工具类</h5>
+<p>equals 判断ByteBuf实例的相等性<br>
+hexdump 十六进制打印ByteBuf的内容</p>
+<h5 id="资源释放">资源释放</h5>
+<ol>
+<li>入站，使用mpleChannelInboundHandler，写 channelRead()方法使用ReferenceCountUtil.release()，使用 ctx.fireChannelRead 继续向后传递</li>
+<li>出站，当调用了 write 或者 writeAndFlush 方法后，Netty 会自动替我们释放，不需要我们业务代码自行释放</li>
+</ol>
+<h4 id="tcp粘包半包">TCP粘包/半包</h4>
+<p>客户端发送D1，D2两个包，因为不确定服务端的接收大小，所以会出现四种情况</p>
+<ol>
+<li>服务端分两次收到独立的数据包，分别是D1，D2，没有粘包和拆包</li>
+<li>服务端一次性收到一个数据包，D1，D2粘合在一起，被称为TCP粘包</li>
+<li>服务端收到两个包，但D1，D2一部分粘在一起，被成为TCP拆包</li>
+<li>如果服务端的滑动窗口很小，可能发送多次收到D1，D2拆开的包</li>
+</ol>
+<h5 id="粘包原因">粘包原因</h5>
+<p>客户端开启Nagle算法，对较小的数据包进行整合发送，服务端无法区分<br>
+服务端收到之后写入缓冲区，在下一次取数据的时候取出多个包的数据</p>
+<h5 id="半包原因">半包原因</h5>
+<p>ip分片传输，传输过程中丢失部分数据，缓冲区大小</p>
+<h5 id="解决办法">解决办法</h5>
+<ol>
+<li>在包尾添加特殊分隔符</li>
+<li>消息定长，不够空位补空格</li>
+<li>消息分为消息头和消息体，消息头包含消息总长度</li>
+</ol>
+<h5 id="lengthfieldbasedframe">LengthFieldBasedFrame</h5>
+<h6 id="maxframelength-包的最大长度">maxFrameLength 包的最大长度</h6>
+<h6 id="lengthfieldoffset-长度域的偏移量表示跳过多少字节之后是长度域">lengthFieldOffset 长度域的偏移量，表示跳过多少字节之后是长度域</h6>
+<h6 id="lengthfieldlength-长度域的长度">lengthFieldLength 长度域的长度</h6>
+<h6 id="lengthadjustment-长度域的修正值">lengthAdjustment 长度域的修正值</h6>
+<h6 id="initialbytestostrip-数据帧当中跳过的字节数跳过多少的数据才是业务数据">initialBytesToStrip 数据帧当中跳过的字节数，跳过多少的数据才是业务数据</h6>
+<h6 id="failfast-为true的话读取完长度域的长度就判断是否过长">failFast 为true的话读取完长度域的长度就判断是否过长</h6>
+<h3 id="编码器">编码器</h3>
+<p>MessageToByteEncoder<I><br>
+MessageToMessageEncoder<T></p>
+<h4 id="encodechannelhandlercontext-ctxi-msgbytebuf-out">encode(ChannelHandlerContext ctx,I msg,ByteBuf out)</h4>
+<p>传入Imsg，然后被传给下个ChannelOutboundHandler</p>
+<h3 id="解码器">解码器</h3>
+<p>ByteToMessageDecoder<br>
+MessageToMessageDecoder<T><br>
+负责将入站数据从一种格式转化成另一种格式，所以实质上是ChannelInboundHandler</p>
+<h4 id="decodechannelhandlercontext-ctxbytebuf-inlistobject-out">decode(ChannelHandlerContext ctx,ByteBuf in,List<Object> out)</h4>
+<p>ByteBuf负责传入数据，List out负责添加编码信息<br>
+对这个方法会进行重复调用，直到确定没有新元素加入list和ByteBuf没有更多的可读字节<br>
+之后如果list不为空，那么list将被传递给下一个ChannelInboundHandler</p>
+<h3 id="空闲时间检测">空闲时间检测</h3>
+<h4 id="idlestatehandler">IdleStateHandler</h4>
+<p>连接空闲时间长，触发IdleStateEvent<br>
+重写InHandler userEventTriggered方法来处理 IdleStateEvent事件</p>
+<h4 id="readtimeouthandler">ReadTimeoutHandler</h4>
+<p>如果指定的时间间隔没有收到入站消息，就跑出ReadTimeOutExcption，并关闭对应的Channel</p>
+<h4 id="writetimeouthandler">WriteTimeoutHandler</h4>
+<p>如果指定时间没有写入消息，抛出WriteTimeOutExcption，并关闭对应的Channel</p>
+<h4 id="java序列化">java序列化</h4>
+<h5 id="java序列化的缺点">java序列化的缺点</h5>
+<ol>
+<li>无法跨语言</li>
+<li>序列化之后流太大</li>
+<li>序列化的性能较差</li>
+</ol>
+<h3 id="单元测试">单元测试</h3>
+<figure data-type="image" tabindex="6"><img src="https://zwangsheng.github.io/post-images/1607999656762.jpg" alt="" loading="lazy"></figure>
+<h3 id="udp广播和udp单播">UDP广播和UDP单播</h3>
+<h3 id="udt">UDT</h3>
+<h3 id="服务器推送技术">服务器推送技术</h3>
+<h4 id="ajax">Ajax</h4>
+<p>定时器不停的轮询</p>
+<h4 id="comet">Comet</h4>
+<h3 id="websocket通讯">WebSocket通讯</h3>
+<p>设置<br>
+Upgrade: websocket<br>
+Connection: Upgrade<br>
+<img src="https://zwangsheng.github.io/post-images/1608000009383.jpg" alt="" loading="lazy"><br>
+<img src="https://zwangsheng.github.io/post-images/1608000241644.jpg" alt="" loading="lazy"></p>
+<h3 id="http和https的区别">HTTP和HTTPS的区别</h3>
+<p>https较于http安全<br>
+http端口80，https端口443</p>
+<h3 id="netty解决java空轮训bug">Netty解决java空轮训Bug</h3>
+<p>空轮询的bug来自于poll和epoll对于突然中断的连接返回POLLHUP，POLLERR，eventSet的变化导致Selector被唤醒，执行select方法的时候返回是0，导致对Key值遍历的事件处理不了</p>
+<h4 id="修复方法">修复方法</h4>
+<h5 id="去除selectkeys然后刷新selector">去除SelectKeys，然后刷新Selector</h5>
+<p>存在问题，多线程key.cannel可能于selectNow存在并发情况，测试后基本无效</p>
+<h5 id="创建新的selector-netty办法">创建新的Selector netty办法</h5>
+<p>旧selector无效轮询几次后，重建selector，把channel取消注册，然后注册到新的selector上</p>
+<h3 id="netty的内存管理">Netty的内存管理</h3>
+<p>申请一块大内存Arena，Arena由许多的chuck组成，每个chuck默认由2048个page组成<br>
+Chuck通过AVL管理page，中间节点表示内存区域，节点记录他在内存区域当中的偏移量<br>
+当page被分配出去后，中间节点会进行标记，代表节点下的区域被分配<br>
+大于8k分配在poolChunkList<br>
+小于8k分配在PoolSubpage，page分段的子页</p>
+<h3 id="select-poll-epoll-的区别">select、poll、epoll 的区别</h3>
+<h4 id="一个进程打开的连接数">一个进程打开的连接数</h4>
+<p>select 单个进程所能打开的最大连接数有 FD_SETSIZE 宏定义<br>
+poll 本质上和 select 没有区别，但是它没有最大连接数的限制，原因 是它是基于链表来存储的<br>
+epoll 连接数基本上只受限于机器的内存大小</p>
+<h4 id="fd-剧增后带来的-io-效率问题">FD 剧增后带来的 IO 效率问题</h4>
+<p>select 线性遍历，随着增加会变慢<br>
+poll 同上<br>
+epoll 只有活跃的才会处理</p>
+<h4 id="消息传递方式">消息传递方式</h4>
+<p>select 内核需要将消息传递到用户空间，都需要内核拷贝动作<br>
+poll 同上<br>
+epoll 内核和用户公用一块空间</p>
+<h3 id="水平触发和垂直触发">水平触发和垂直触发</h3>
+<h4 id="水平触发-level_triggered">水平触发 Level_triggered</h4>
+<p>当监控的FD上有读写事件发生的时候，epoll_wait()会通知程序取读写，如果上次没有读完，还是会继续通知，一直不读一直通知</p>
+<h4 id="边缘触发-edge_triggered">边缘触发 Edge_triggered</h4>
+<p>监控的FD上发生读写事件，epoll_wait()只会通知你一次</p>
+<h3 id="零拷贝">零拷贝</h3>
+<p>计算机执行操作时，CPU 不需要先将数据从某处内存 复制到另一个特定区域。这种技术通常用于通过网络传输文件时节省 CPU 周期和内存带宽</p>
+<h4 id="传统传输">传统传输</h4>
+<figure data-type="image" tabindex="7"><img src="https://zwangsheng.github.io/post-images/1608002514413.jpg" alt="" loading="lazy"></figure>
+<h4 id="mmap">mmap</h4>
+<figure data-type="image" tabindex="8"><img src="https://zwangsheng.github.io/post-images/1608002529379.jpg" alt="" loading="lazy"></figure>
+<h4 id="sendfile">sendfile</h4>
+<figure data-type="image" tabindex="9"><img src="https://zwangsheng.github.io/post-images/1608002542573.jpg" alt="" loading="lazy"></figure>
+<h4 id="splice">splice</h4>
+<figure data-type="image" tabindex="10"><img src="https://zwangsheng.github.io/post-images/1608002556424.jpg" alt="" loading="lazy"></figure>
+<h2 id="linux网络模型">Linux网络模型</h2>
+<h3 id="同步异步">同步异步</h3>
+<p>关注的是调用方是否主动获取结果<br>
+同步，主动等待<br>
+异步，其它方式通知</p>
+<h3 id="阻塞和非阻塞">阻塞和非阻塞</h3>
+<p>主要关注的是等待结果返回调用方的状态<br>
+阻塞，结果返回之前挂起<br>
+非阻塞，结果返回之前还能干活</p>
+<h3 id="阻塞io-同步">阻塞IO 同步</h3>
+<figure data-type="image" tabindex="11"><img src="https://zwangsheng.github.io/post-images/1608002774899.jpg" alt="" loading="lazy"></figure>
+<h3 id="非阻塞io-同步">非阻塞IO 同步</h3>
+<figure data-type="image" tabindex="12"><img src="https://zwangsheng.github.io/post-images/1608003043278.jpg" alt="" loading="lazy"></figure>
+<h3 id="io复用-同步">IO复用 同步</h3>
+<figure data-type="image" tabindex="13"><img src="https://zwangsheng.github.io/post-images/1608003132506.jpg" alt="" loading="lazy"></figure>
+<h3 id="信号驱动io-同步">信号驱动IO 同步</h3>
+<figure data-type="image" tabindex="14"><img src="https://zwangsheng.github.io/post-images/1608003190401.jpg" alt="" loading="lazy"></figure>
+<h3 id="异步io-异步">异步IO 异步</h3>
+<figure data-type="image" tabindex="15"><img src="https://zwangsheng.github.io/post-images/1608003225802.jpg" alt="" loading="lazy"></figure>
+<h3 id="五种对比">五种对比</h3>
+<figure data-type="image" tabindex="16"><img src="https://zwangsheng.github.io/post-images/1608003271973.jpg" alt="" loading="lazy"></figure>
+<h2 id="linux内核">Linux内核</h2>
+<h3 id="中断">中断</h3>
+<p>当设备上有数据到达的时候，会给CPU相关的引脚触发一个电压的变化，通知CPU进行处理</p>
+<h3 id="软中断">软中断</h3>
+<p>给一个二进制标志位通知中断</p>
+<h3 id="内核收包">内核收包</h3>
+<figure data-type="image" tabindex="17"><img src="https://zwangsheng.github.io/post-images/1608003552960.jpg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[单例模式]]></title>
         <id>https://zwangsheng.github.io/post/dan-li-mo-shi/</id>
