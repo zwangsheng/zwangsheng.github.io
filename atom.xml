@@ -2,14 +2,163 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>-wangSheng-</title>
-    <updated>2020-12-15T06:56:04.742Z</updated>
+    <updated>2021-01-07T09:40:24.556Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
     <subtitle>-wangsheng-</subtitle>
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, -wangSheng-</rights>
+    <rights>All rights reserved 2021, -wangSheng-</rights>
+    <entry>
+        <title type="html"><![CDATA[MySQL]]></title>
+        <id>https://zwangsheng.github.io/post/mysql/</id>
+        <link href="https://zwangsheng.github.io/post/mysql/">
+        </link>
+        <updated>2020-12-22T13:38:12.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="mysql的处理层">MySql的处理层</h1>
+<ol>
+<li>判断是否是查询语句，首先会查询缓存是否有了相对应的结果，有就直接返回，无就进入下一步</li>
+<li>解析查询语句，创建一个解析树</li>
+<li>优化sql语句</li>
+</ol>
+<h2 id="sql语句解析">SQL语句解析</h2>
+<p><img src="https://zwangsheng.github.io/post-images/1610004870278.jpg" alt="" loading="lazy"><br>
+<img src="https://zwangsheng.github.io/post-images/1610005256391.jpg" alt="" loading="lazy"></p>
+<h1 id="执行引擎">执行引擎</h1>
+<h2 id="innodb">Innodb</h2>
+<p>事务存储型引擎，完全支持ACID特性，支持行级锁</p>
+<h2 id="myisam">MyISAM</h2>
+<p>非事务存储，适合只读类应用</p>
+<h3 id="innodb和myisam的区别">Innodb和MyISAM的区别</h3>
+<figure data-type="image" tabindex="1"><img src="https://zwangsheng.github.io/post-images/1610005550915.jpg" alt="" loading="lazy"></figure>
+<h2 id="csv">CSV</h2>
+<p>所有列都不能为null，可以直接在文本上进行修改，不支持索引</p>
+<h1 id="锁">锁</h1>
+<h2 id="表锁">表锁</h2>
+<p>开销小，上锁快，不会出现死锁<br>
+锁粒度大，发生冲突的概率高，并发度低</p>
+<h2 id="行锁">行锁</h2>
+<p>开销大，上锁慢，会出现死锁<br>
+锁粒度小，发送冲突的概率小，并发度高</p>
+<h2 id="间隙锁">间隙锁</h2>
+<p>介于表锁和行锁之间</p>
+<h3 id="行锁表锁使用场景的讨论">行锁表锁使用场景的讨论</h3>
+<p>表锁适合以查询为主，只有少量按照索引进行更新<br>
+行锁适合大量的按索引条件并发更新的不同数据，拥有并发查询的能力</p>
+<h3 id="innodb的上锁">Innodb的上锁</h3>
+<p>lock in share mode 读锁<br>
+for update 写锁<br>
+两个事务不能锁同一个索引<br>
+insert ，delete ， update 在事务中都会自动默认加上排它锁<br>
+行锁只有遇到索引才能成为行锁，不然升级成为表锁</p>
+<h1 id="事务">事务</h1>
+<h2 id="事务的特性">事务的特性</h2>
+<h3 id="原子性">原子性</h3>
+<p>操作要么全部成功要么全部失败</p>
+<h3 id="一致性">一致性</h3>
+<p>操作前后的结果保持一致</p>
+<h3 id="隔离性">隔离性</h3>
+<p>事务与事务之间保持隔离</p>
+<h3 id="持久性">持久性</h3>
+<p>事务一旦提交就被持久化</p>
+<h2 id="事务的并发问题">事务的并发问题</h2>
+<h3 id="脏读">脏读</h3>
+<p>事务A读取事务B的数据，事务B进行回滚，导致A读到了脏数据</p>
+<h3 id="不可重复读">不可重复读</h3>
+<p>事务A多次读取相同的数据，事务B在这个过程中修改了数据，导致多次读取不一致</p>
+<h3 id="幻读">幻读</h3>
+<p>事务A多次读取大量数据，事务B往中间查了新的数据</p>
+<h2 id="事务的隔离级别">事务的隔离级别</h2>
+<h3 id="读未提交">读未提交</h3>
+<p>读取未提交的事务的数据 --写允许读</p>
+<h3 id="读已提交">读已提交</h3>
+<p>读取已提交的事务的数据 --写静止读</p>
+<h3 id="可重复读">可重复读</h3>
+<p>事务开启之后，不允许写操作 --读静止写</p>
+<h3 id="串行化">串行化</h3>
+<p>所有事务串行化</p>
+<h1 id="业务设计">业务设计</h1>
+<h2 id="三大范式">三大范式</h2>
+<ol>
+<li>所有字段值都不可再分</li>
+<li>表中的每个数据都要与主键相关</li>
+<li>都与主键之间相关，而不是间接相关</li>
+</ol>
+<h2 id="反范式设计">反范式设计</h2>
+<p>添加冗余来避免热点数据的连表查询</p>
+<h1 id="索引">索引</h1>
+<h2 id="聚集索引">聚集索引</h2>
+<p>索引项的排序方式和表中记录的排序方式一样</p>
+<p>一张表只能有一个聚集索引</p>
+<h3 id="使用场合">使用场合</h3>
+<p>返回的字段按照这个排序<br>
+查询结果返回一个区间的值<br>
+查询结果返回某值相同的大量结果集</p>
+<h2 id="非聚集索引">非聚集索引</h2>
+<h3 id="使用场合-2">使用场合</h3>
+<p>唯一性比较高的时候<br>
+获得的数据量少的情况</p>
+<h2 id="索引失效的情况">索引失效的情况</h2>
+<ol>
+<li>like的%在前面</li>
+<li>使用索引列进行计算</li>
+<li>对索引使用了函数</li>
+<li>对索引使用了!=</li>
+</ol>
+<h1 id="存储结构">存储结构</h1>
+<h2 id="b-tree">B-Tree</h2>
+<p>所有的键值分布在这个树的每个节点中</p>
+<p>搜索可能在非叶子节点结束</p>
+<p>所有的叶子节点在同一层，按照升序排列</p>
+<h2 id="btree">B+Tree</h2>
+<p>树的非叶子节点不存放数据</p>
+<p>叶子节点存储数据和关键词，非叶子节点的关键字也会沉到叶子节点进行排序</p>
+<p>叶子节点形成双向环状链表</p>
+<h1 id="执行计划">执行计划</h1>
+<p>帮助分析优化SQL语句</p>
+<h2 id="详解">详解</h2>
+<h3 id="id列">ID列</h3>
+<p>表示查询select子句的顺序</p>
+<p>id相同时，从上到下执行</p>
+<p>id不同时，id大的先执行</p>
+<h3 id="select_type列">Select_Type列</h3>
+<p>区别普通查询，联合查询，子查询<br>
+<img src="https://zwangsheng.github.io/post-images/1610011703036.jpg" alt="" loading="lazy"></p>
+<h3 id="table列">Table列</h3>
+<p>表示数据从哪张表来</p>
+<h3 id="type列">Type列</h3>
+<p>访问类型，衡量sql好坏的指标<br>
+<em>system</em> &gt; <em>const</em> &gt; <em>eq_ref</em> &gt; <em>ref</em> &gt; fulltext &gt; ref_or_null &gt; index_merge &gt;unique_subquery &gt; index_subquery &gt; <em>range</em> &gt; <em>index</em> &gt; <em>ALL</em></p>
+<h4 id="system">System</h4>
+<p>表里只有一条数据</p>
+<h4 id="const">Const</h4>
+<p>通过索引一次就找到了</p>
+<h4 id="eq_ref">eq_ref</h4>
+<p>唯一性索引扫描</p>
+<h4 id="ref">ref</h4>
+<p>非唯一性索引扫描</p>
+<h4 id="range">range</h4>
+<p>只检索给定范围的行，使用一个索引来选择行</p>
+<h4 id="index">index</h4>
+<p>查询结果全是索引列的时候，虽然查了全表，但是也只是索引</p>
+<h4 id="all">ALL</h4>
+<p>遍历全表进行查询</p>
+<h3 id="possible_keys">possible_keys</h3>
+<p>可能使用的索引</p>
+<h3 id="key">Key</h3>
+<p>实际使用的索引</p>
+<h3 id="key_len">Key_len</h3>
+<p>表示索引使用的字节数</p>
+<h3 id="ref-2">Ref</h3>
+<p>显示索引的那一列被使用了</p>
+<h3 id="rows">Rows</h3>
+<p>估算找到记录所需要读取的记录条数</p>
+<h3 id="extra">Extra</h3>
+<p>特殊信息<br>
+<img src="https://zwangsheng.github.io/post-images/1610012288249.jpg" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Epoll高效原理解析]]></title>
         <id>https://zwangsheng.github.io/post/epoll-gao-xiao-yuan-li-jie-xi/</id>
