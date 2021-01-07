@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>-wangSheng-</title>
-    <updated>2021-01-07T09:40:24.556Z</updated>
+    <updated>2021-01-07T10:04:02.879Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,6 +10,59 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, -wangSheng-</rights>
+    <entry>
+        <title type="html"><![CDATA[Redis]]></title>
+        <id>https://zwangsheng.github.io/post/redis/</id>
+        <link href="https://zwangsheng.github.io/post/redis/">
+        </link>
+        <updated>2021-01-07T08:17:34.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="数据结构">数据结构</h1>
+<h2 id="string-key-value">String key-value</h2>
+<p>字符串</p>
+<h2 id="map-key-field-value">Map key field value</h2>
+<p>哈希表</p>
+<h2 id="list">List</h2>
+<p>链表<br>
+可以进行左边插入左边弹出，右边插入右边弹出</p>
+<h2 id="set">Set</h2>
+<p>不重复集合</p>
+<h2 id="zset">ZSet</h2>
+<p>有序不重复集合</p>
+<h1 id="缓存问题">缓存问题</h1>
+<h2 id="缓存穿透">缓存穿透</h2>
+<p>查询一个不存在的数据，缓存中没有，数据库当中也没有</p>
+<h3 id="解决">解决</h3>
+<ol>
+<li>存储空对象<br>
+对于热点key值缓存个空值，不去数据库，在缓存直接返回</li>
+<li>布隆过滤器<br>
+缓存的基础上加上布隆过滤器<br>
+先在缓存查找，找不到进入布隆过滤器，查到了有key，进入DB，并且更新缓存</li>
+</ol>
+<h2 id="缓存击穿">缓存击穿</h2>
+<p>key值刚好过期，有一堆刚好的请求过来</p>
+<h3 id="解决方法">解决方法</h3>
+<ol>
+<li>分布式锁 让一个请求去查，然后更新缓存</li>
+<li>手动续期</li>
+</ol>
+<h2 id="缓存雪崩">缓存雪崩</h2>
+<p>无法提供缓存服务，导致所有的请求都进入DB</p>
+<h3 id="解决方法-2">解决方法</h3>
+<ol>
+<li>缓存高可用</li>
+<li>DB限流</li>
+<li>服务降级</li>
+</ol>
+<h1 id="redis的过期策略以及内存淘汰机制">Redis的过期策略以及内存淘汰机制</h1>
+<p>定期删除+惰性删除策略<br>
+定期抽样删除，如果使用这个key的时候去判断，是不是过期了</p>
+<h1 id="单线程的redis为什么这么快">单线程的redis为什么这么快</h1>
+<h2 id="纯内存操作">纯内存操作</h2>
+<h2 id="单线程操作避免了频繁的上下文切换">单线程操作，避免了频繁的上下文切换</h2>
+<h2 id="采用了非阻塞io多路复用机制">采用了非阻塞I/O多路复用机制</h2>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MySQL]]></title>
         <id>https://zwangsheng.github.io/post/mysql/</id>

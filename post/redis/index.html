@@ -1,0 +1,255 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Redis | -wangSheng-</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1610013831455">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Redis | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="数据结构
+String key-value
+字符串
+Map key field value
+哈希表
+List
+链表
+可以进行左边插入左边弹出，右边插入右边弹出
+Set
+不重复集合
+ZSet
+有序不重复集合
+缓存问题
+缓存穿透
+查询一个不存在..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1610013831455" alt="">
+  </a>
+  <h1 class="site-title">
+    -wangSheng-
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Redis
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-07
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="数据结构">数据结构</h1>
+<h2 id="string-key-value">String key-value</h2>
+<p>字符串</p>
+<h2 id="map-key-field-value">Map key field value</h2>
+<p>哈希表</p>
+<h2 id="list">List</h2>
+<p>链表<br>
+可以进行左边插入左边弹出，右边插入右边弹出</p>
+<h2 id="set">Set</h2>
+<p>不重复集合</p>
+<h2 id="zset">ZSet</h2>
+<p>有序不重复集合</p>
+<h1 id="缓存问题">缓存问题</h1>
+<h2 id="缓存穿透">缓存穿透</h2>
+<p>查询一个不存在的数据，缓存中没有，数据库当中也没有</p>
+<h3 id="解决">解决</h3>
+<ol>
+<li>存储空对象<br>
+对于热点key值缓存个空值，不去数据库，在缓存直接返回</li>
+<li>布隆过滤器<br>
+缓存的基础上加上布隆过滤器<br>
+先在缓存查找，找不到进入布隆过滤器，查到了有key，进入DB，并且更新缓存</li>
+</ol>
+<h2 id="缓存击穿">缓存击穿</h2>
+<p>key值刚好过期，有一堆刚好的请求过来</p>
+<h3 id="解决方法">解决方法</h3>
+<ol>
+<li>分布式锁 让一个请求去查，然后更新缓存</li>
+<li>手动续期</li>
+</ol>
+<h2 id="缓存雪崩">缓存雪崩</h2>
+<p>无法提供缓存服务，导致所有的请求都进入DB</p>
+<h3 id="解决方法-2">解决方法</h3>
+<ol>
+<li>缓存高可用</li>
+<li>DB限流</li>
+<li>服务降级</li>
+</ol>
+<h1 id="redis的过期策略以及内存淘汰机制">Redis的过期策略以及内存淘汰机制</h1>
+<p>定期删除+惰性删除策略<br>
+定期抽样删除，如果使用这个key的时候去判断，是不是过期了</p>
+<h1 id="单线程的redis为什么这么快">单线程的redis为什么这么快</h1>
+<h2 id="纯内存操作">纯内存操作</h2>
+<h2 id="单线程操作避免了频繁的上下文切换">单线程操作，避免了频繁的上下文切换</h2>
+<h2 id="采用了非阻塞io多路复用机制">采用了非阻塞I/O多路复用机制</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+<ul>
+<li><a href="#string-key-value">String key-value</a></li>
+<li><a href="#map-key-field-value">Map key field value</a></li>
+<li><a href="#list">List</a></li>
+<li><a href="#set">Set</a></li>
+<li><a href="#zset">ZSet</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98">缓存问题</a>
+<ul>
+<li><a href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F">缓存穿透</a>
+<ul>
+<li><a href="#%E8%A7%A3%E5%86%B3">解决</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF">缓存击穿</a>
+<ul>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">解决方法</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9">缓存雪崩</a>
+<ul>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-2">解决方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#redis%E7%9A%84%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%BB%A5%E5%8F%8A%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E6%9C%BA%E5%88%B6">Redis的过期策略以及内存淘汰机制</a></li>
+<li><a href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84redis%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E5%BF%AB">单线程的redis为什么这么快</a>
+<ul>
+<li><a href="#%E7%BA%AF%E5%86%85%E5%AD%98%E6%93%8D%E4%BD%9C">纯内存操作</a></li>
+<li><a href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%93%8D%E4%BD%9C%E9%81%BF%E5%85%8D%E4%BA%86%E9%A2%91%E7%B9%81%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2">单线程操作，避免了频繁的上下文切换</a></li>
+<li><a href="#%E9%87%87%E7%94%A8%E4%BA%86%E9%9D%9E%E9%98%BB%E5%A1%9Eio%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E6%9C%BA%E5%88%B6">采用了非阻塞I/O多路复用机制</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/mysql/">
+              <h3 class="post-title">
+                MySQL
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Writed By wangSheng
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
