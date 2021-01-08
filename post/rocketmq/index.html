@@ -1,0 +1,294 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RocketMQ | -wangSheng-</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1610072195569">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="RocketMQ | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="为啥选择MQ
+异步
+异步调用提高响应速度
+解耦
+降低系统耦合
+削峰
+请求到达峰值之后，保证后端固定速度消费
+RocketMQ的架构
+NameSever
+无状态列表
+Borker
+负责发送消息，持久化消息
+Producer
+消息的生产者，发送..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1610072195569" alt="">
+  </a>
+  <h1 class="site-title">
+    -wangSheng-
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              RocketMQ
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-07
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="为啥选择mq">为啥选择MQ</h1>
+<h2 id="异步">异步</h2>
+<p>异步调用提高响应速度</p>
+<h2 id="解耦">解耦</h2>
+<p>降低系统耦合</p>
+<h2 id="削峰">削峰</h2>
+<p>请求到达峰值之后，保证后端固定速度消费</p>
+<h1 id="rocketmq的架构">RocketMQ的架构</h1>
+<h2 id="namesever">NameSever</h2>
+<p>无状态列表</p>
+<h2 id="borker">Borker</h2>
+<p>负责发送消息，持久化消息</p>
+<h2 id="producer">Producer</h2>
+<p>消息的生产者，发送消息到Broker</p>
+<h2 id="consumer">Consumer</h2>
+<p>消息的消费者，从Broker接受消息消费</p>
+<h2 id="queue">queue</h2>
+<p>Topic是抽象的概念，实际的底层是多个queue组成，数据是真实的存在queue上的</p>
+<h1 id="borker的消息消费后会立刻删除吗">Borker的消息消费后，会立刻删除吗</h1>
+<p>每条消息都会持久化到commoit Log上，consumer消费之后只是更改了commit log的偏移量</p>
+<h2 id="那么消费过的消息是否会造成消息堆积">那么消费过的消息是否会造成消息堆积</h2>
+<p>默认48个小时之后会删除不再使用的commit log检查最后使用时间，指定时间删除</p>
+<h1 id="消费方式">消费方式</h1>
+<h2 id="集群消费">集群消费</h2>
+<p>一条消息只会被同一个Group的一个consumer消费</p>
+<p>如果存在不同的Group，那么每个Group都会有一个consumer消费这个消息</p>
+<h2 id="广播消费">广播消费</h2>
+<p>消息对于同一个Group的consumer都会消费一遍</p>
+<h1 id="消费消息是pull还是push">消费消息是pull还是push</h1>
+<p>RocketMQ没有真正意义上的push，都是pull</p>
+<p>虽然有push类，但实际采用了长轮训机制，还是pull</p>
+<h2 id="为啥采用pull不用push">为啥采用pull不用push</h2>
+<p>如果broker推送消息，consumer的消费能力不确定，那么会造成消息堆积不能被其他consumer消费的问题</p>
+<h1 id="重复消费">重复消费</h1>
+<h2 id="原因">原因</h2>
+<p>网络的不稳定性</p>
+<h3 id="ack">ACK</h3>
+<p>consumer完成消费之后应该返回ACK，Broker会将消息从queue上移除</p>
+<p>当ack因为网络原因无法发送到borker的时候，broker会认为这个消息没有被消费，就会进行重投</p>
+<h2 id="解决方式">解决方式</h2>
+<ol>
+<li>数据库</li>
+<li>redis</li>
+</ol>
+<h1 id="顺序消费">顺序消费</h1>
+<h2 id="生产端">生产端</h2>
+<p>投送到同一个queue，MessageQueueSelector接口，确定topic下投送的queue</p>
+<h2 id="消费端">消费端</h2>
+<p>一个consumer进行单线程消费</p>
+<h1 id="消息不丢失">消息不丢失</h1>
+<h2 id="producer-2">Producer</h2>
+<p>同步发送消息，发送失败之后进行重试</p>
+<h2 id="borker-2">Borker</h2>
+<p>同步刷盘，同步持久化到磁盘</p>
+<h2 id="consumer-2">Consumer</h2>
+<p>完全消费正常后手动ACK</p>
+<h1 id="消息堆积">消息堆积</h1>
+<p>定位问题所在</p>
+<h2 id="conusmer-和-queue数量">Conusmer 和 queue数量</h2>
+<p>准备一个临时的topic，其中queue的数量是堆积的几倍，上线一台consumer进行分发旧消息，上线多台consumer处理临时的topic<br>
+注意queue的数量要大于consumer，不然有的consumer就闲着</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%B8%BA%E5%95%A5%E9%80%89%E6%8B%A9mq">为啥选择MQ</a>
+<ul>
+<li><a href="#%E5%BC%82%E6%AD%A5">异步</a></li>
+<li><a href="#%E8%A7%A3%E8%80%A6">解耦</a></li>
+<li><a href="#%E5%89%8A%E5%B3%B0">削峰</a></li>
+</ul>
+</li>
+<li><a href="#rocketmq%E7%9A%84%E6%9E%B6%E6%9E%84">RocketMQ的架构</a>
+<ul>
+<li><a href="#namesever">NameSever</a></li>
+<li><a href="#borker">Borker</a></li>
+<li><a href="#producer">Producer</a></li>
+<li><a href="#consumer">Consumer</a></li>
+<li><a href="#queue">queue</a></li>
+</ul>
+</li>
+<li><a href="#borker%E7%9A%84%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E5%90%8E%E4%BC%9A%E7%AB%8B%E5%88%BB%E5%88%A0%E9%99%A4%E5%90%97">Borker的消息消费后，会立刻删除吗</a>
+<ul>
+<li><a href="#%E9%82%A3%E4%B9%88%E6%B6%88%E8%B4%B9%E8%BF%87%E7%9A%84%E6%B6%88%E6%81%AF%E6%98%AF%E5%90%A6%E4%BC%9A%E9%80%A0%E6%88%90%E6%B6%88%E6%81%AF%E5%A0%86%E7%A7%AF">那么消费过的消息是否会造成消息堆积</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E6%96%B9%E5%BC%8F">消费方式</a>
+<ul>
+<li><a href="#%E9%9B%86%E7%BE%A4%E6%B6%88%E8%B4%B9">集群消费</a></li>
+<li><a href="#%E5%B9%BF%E6%92%AD%E6%B6%88%E8%B4%B9">广播消费</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF%E6%98%AFpull%E8%BF%98%E6%98%AFpush">消费消息是pull还是push</a>
+<ul>
+<li><a href="#%E4%B8%BA%E5%95%A5%E9%87%87%E7%94%A8pull%E4%B8%8D%E7%94%A8push">为啥采用pull不用push</a></li>
+</ul>
+</li>
+<li><a href="#%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9">重复消费</a>
+<ul>
+<li><a href="#%E5%8E%9F%E5%9B%A0">原因</a>
+<ul>
+<li><a href="#ack">ACK</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F">解决方式</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9">顺序消费</a>
+<ul>
+<li><a href="#%E7%94%9F%E4%BA%A7%E7%AB%AF">生产端</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E7%AB%AF">消费端</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E5%A4%B1">消息不丢失</a>
+<ul>
+<li><a href="#producer-2">Producer</a></li>
+<li><a href="#borker-2">Borker</a></li>
+<li><a href="#consumer-2">Consumer</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B6%88%E6%81%AF%E5%A0%86%E7%A7%AF">消息堆积</a>
+<ul>
+<li><a href="#conusmer-%E5%92%8C-queue%E6%95%B0%E9%87%8F">Conusmer 和 queue数量</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/redis/">
+              <h3 class="post-title">
+                Redis
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Writed By wangSheng
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

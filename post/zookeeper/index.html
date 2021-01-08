@@ -2,18 +2,22 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Epoll高效原理解析 | -wangSheng-</title>
+<title>ZooKeeper | -wangSheng-</title>
 <link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1610072195569">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Epoll高效原理解析 | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="ZooKeeper | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="进程调用epoll_Create方法的时候，linux内核会创建出一个eventpoll的结构体，在内核的cache当中建立一个红黑树存储epoll_ctx传输过来的socket，还会建立一个rdllist双向链表，存放准备就绪的事件。
-调..." />
-    <meta name="keywords" content="Netty" />
+    <meta name="description" content="节点
+PERSISTENT-持久节点
+除非手动删除，不然一直存在ZooKeeper上
+EPHEMERAL-临时节点
+临时节点的生命周期与客户端的会话绑定，客户端会话失效，那么ZooKeeper的节点就会失效
+PERSISTENT_SEQUE..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -69,41 +73,55 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Epoll高效原理解析
+              ZooKeeper
             </h2>
             <div class="post-info">
               <span>
-                2020-12-15
+                2021-01-07
               </span>
               <span>
-                2 min read
+                1 min read
               </span>
-              
-                <a href="https://zwangsheng.github.io/tag/Xm0M3T3LG/" class="post-tag">
-                  # Netty
-                </a>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>进程调用epoll_Create方法的时候，linux内核会创建出一个eventpoll的结构体，在内核的cache当中建立一个红黑树存储epoll_ctx传输过来的socket，还会建立一个rdllist双向链表，存放准备就绪的事件。<br>
-调用epoll_select的时候，判断rdllist是否为空即可，有数据就返回，没有就sleep，时间到了也返回。<br>
-同时，所有添加到epoll的事件都会和外设建立回调的关系，也就是外设感应到事件就会调用这些回调函数，<br>
-叫做ep_poll_callback，这样子的事件也会被放在rdllist当中。<br>
-当调用epoll_wait检查有无发生事件的连接的时候，只检查rdllist有无epitem元素，如果不为空，就复制时间到用户空间（可以使用内核用户共享内存提高效率），同时返回数量给用户。<br>
-<img src="https://zwangsheng.github.io/post-images/1608004833881.jpg" alt="" loading="lazy"><br>
-将功能进行拆分<br>
-select当中维护等待队列和阻塞进程是一个函数，<br>
-epoll进行拆分，拆分为epoll_ctl维护等待队列，epoll_wait阻塞进程<br>
-维护就绪列表<br>
-select在select阻塞的时候遍历一遍socket列表，发现有感兴趣事件之后交由进程处理，进程不知道哪个socket，所以需要两遍遍历socket列表<br>
-epoll维护了rdllist，里面存放了就绪的socket免得遍历<br>
-<img src="https://zwangsheng.github.io/post-images/1608010906772.jpg" alt="" loading="lazy"></p>
+                <h1 id="节点">节点</h1>
+<h2 id="persistent-持久节点">PERSISTENT-持久节点</h2>
+<p>除非手动删除，不然一直存在ZooKeeper上</p>
+<h2 id="ephemeral-临时节点">EPHEMERAL-临时节点</h2>
+<p>临时节点的生命周期与客户端的会话绑定，客户端会话失效，那么ZooKeeper的节点就会失效</p>
+<h2 id="persistent_sequential-持久顺序节点">PERSISTENT_SEQUENTIAL-持久顺序节点</h2>
+<p>增加了顺序</p>
+<h2 id="ephemeral_sequential-临时顺序节点">EPHEMERAL_SEQUENTIAL-临时顺序节点</h2>
+<p>增加了顺序</p>
+<h1 id="watcher进行事件通知">Watcher进行事件通知</h1>
+<p>一次性</p>
+<h2 id="客户端注册watcher">客户端注册Watcher</h2>
+<h2 id="服务端处理watcher">服务端处理Watcher</h2>
+<h2 id="客户端回调watcher">客户端回调Watcher</h2>
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li><a href="#%E8%8A%82%E7%82%B9">节点</a>
+<ul>
+<li><a href="#persistent-%E6%8C%81%E4%B9%85%E8%8A%82%E7%82%B9">PERSISTENT-持久节点</a></li>
+<li><a href="#ephemeral-%E4%B8%B4%E6%97%B6%E8%8A%82%E7%82%B9">EPHEMERAL-临时节点</a></li>
+<li><a href="#persistent_sequential-%E6%8C%81%E4%B9%85%E9%A1%BA%E5%BA%8F%E8%8A%82%E7%82%B9">PERSISTENT_SEQUENTIAL-持久顺序节点</a></li>
+<li><a href="#ephemeral_sequential-%E4%B8%B4%E6%97%B6%E9%A1%BA%E5%BA%8F%E8%8A%82%E7%82%B9">EPHEMERAL_SEQUENTIAL-临时顺序节点</a></li>
+</ul>
+</li>
+<li><a href="#watcher%E8%BF%9B%E8%A1%8C%E4%BA%8B%E4%BB%B6%E9%80%9A%E7%9F%A5">Watcher进行事件通知</a>
+<ul>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B3%A8%E5%86%8Cwatcher">客户端注册Watcher</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%A4%84%E7%90%86watcher">服务端处理Watcher</a></li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%9B%9E%E8%B0%83watcher">客户端回调Watcher</a></li>
+</ul>
+</li>
+</ul>
+
               </div>
             </div>
           </article>
@@ -112,9 +130,9 @@ epoll维护了rdllist，里面存放了就绪的socket免得遍历<br>
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://zwangsheng.github.io/post/netty/">
+            <a href="https://zwangsheng.github.io/post/rocketmq/">
               <h3 class="post-title">
-                Netty
+                RocketMQ
               </h3>
             </a>
           </div>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>-wangSheng-</title>
-    <updated>2021-01-07T10:04:02.879Z</updated>
+    <updated>2021-01-08T02:16:44.787Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -10,6 +10,97 @@
     <logo>https://zwangsheng.github.io/images/avatar.png</logo>
     <icon>https://zwangsheng.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, -wangSheng-</rights>
+    <entry>
+        <title type="html"><![CDATA[ZooKeeper]]></title>
+        <id>https://zwangsheng.github.io/post/zookeeper/</id>
+        <link href="https://zwangsheng.github.io/post/zookeeper/">
+        </link>
+        <updated>2021-01-07T08:18:18.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="节点">节点</h1>
+<h2 id="persistent-持久节点">PERSISTENT-持久节点</h2>
+<p>除非手动删除，不然一直存在ZooKeeper上</p>
+<h2 id="ephemeral-临时节点">EPHEMERAL-临时节点</h2>
+<p>临时节点的生命周期与客户端的会话绑定，客户端会话失效，那么ZooKeeper的节点就会失效</p>
+<h2 id="persistent_sequential-持久顺序节点">PERSISTENT_SEQUENTIAL-持久顺序节点</h2>
+<p>增加了顺序</p>
+<h2 id="ephemeral_sequential-临时顺序节点">EPHEMERAL_SEQUENTIAL-临时顺序节点</h2>
+<p>增加了顺序</p>
+<h1 id="watcher进行事件通知">Watcher进行事件通知</h1>
+<p>一次性</p>
+<h2 id="客户端注册watcher">客户端注册Watcher</h2>
+<h2 id="服务端处理watcher">服务端处理Watcher</h2>
+<h2 id="客户端回调watcher">客户端回调Watcher</h2>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[RocketMQ]]></title>
+        <id>https://zwangsheng.github.io/post/rocketmq/</id>
+        <link href="https://zwangsheng.github.io/post/rocketmq/">
+        </link>
+        <updated>2021-01-07T08:18:00.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="为啥选择mq">为啥选择MQ</h1>
+<h2 id="异步">异步</h2>
+<p>异步调用提高响应速度</p>
+<h2 id="解耦">解耦</h2>
+<p>降低系统耦合</p>
+<h2 id="削峰">削峰</h2>
+<p>请求到达峰值之后，保证后端固定速度消费</p>
+<h1 id="rocketmq的架构">RocketMQ的架构</h1>
+<h2 id="namesever">NameSever</h2>
+<p>无状态列表</p>
+<h2 id="borker">Borker</h2>
+<p>负责发送消息，持久化消息</p>
+<h2 id="producer">Producer</h2>
+<p>消息的生产者，发送消息到Broker</p>
+<h2 id="consumer">Consumer</h2>
+<p>消息的消费者，从Broker接受消息消费</p>
+<h2 id="queue">queue</h2>
+<p>Topic是抽象的概念，实际的底层是多个queue组成，数据是真实的存在queue上的</p>
+<h1 id="borker的消息消费后会立刻删除吗">Borker的消息消费后，会立刻删除吗</h1>
+<p>每条消息都会持久化到commoit Log上，consumer消费之后只是更改了commit log的偏移量</p>
+<h2 id="那么消费过的消息是否会造成消息堆积">那么消费过的消息是否会造成消息堆积</h2>
+<p>默认48个小时之后会删除不再使用的commit log检查最后使用时间，指定时间删除</p>
+<h1 id="消费方式">消费方式</h1>
+<h2 id="集群消费">集群消费</h2>
+<p>一条消息只会被同一个Group的一个consumer消费</p>
+<p>如果存在不同的Group，那么每个Group都会有一个consumer消费这个消息</p>
+<h2 id="广播消费">广播消费</h2>
+<p>消息对于同一个Group的consumer都会消费一遍</p>
+<h1 id="消费消息是pull还是push">消费消息是pull还是push</h1>
+<p>RocketMQ没有真正意义上的push，都是pull</p>
+<p>虽然有push类，但实际采用了长轮训机制，还是pull</p>
+<h2 id="为啥采用pull不用push">为啥采用pull不用push</h2>
+<p>如果broker推送消息，consumer的消费能力不确定，那么会造成消息堆积不能被其他consumer消费的问题</p>
+<h1 id="重复消费">重复消费</h1>
+<h2 id="原因">原因</h2>
+<p>网络的不稳定性</p>
+<h3 id="ack">ACK</h3>
+<p>consumer完成消费之后应该返回ACK，Broker会将消息从queue上移除</p>
+<p>当ack因为网络原因无法发送到borker的时候，broker会认为这个消息没有被消费，就会进行重投</p>
+<h2 id="解决方式">解决方式</h2>
+<ol>
+<li>数据库</li>
+<li>redis</li>
+</ol>
+<h1 id="顺序消费">顺序消费</h1>
+<h2 id="生产端">生产端</h2>
+<p>投送到同一个queue，MessageQueueSelector接口，确定topic下投送的queue</p>
+<h2 id="消费端">消费端</h2>
+<p>一个consumer进行单线程消费</p>
+<h1 id="消息不丢失">消息不丢失</h1>
+<h2 id="producer-2">Producer</h2>
+<p>同步发送消息，发送失败之后进行重试</p>
+<h2 id="borker-2">Borker</h2>
+<p>同步刷盘，同步持久化到磁盘</p>
+<h2 id="consumer-2">Consumer</h2>
+<p>完全消费正常后手动ACK</p>
+<h1 id="消息堆积">消息堆积</h1>
+<p>定位问题所在</p>
+<h2 id="conusmer-和-queue数量">Conusmer 和 queue数量</h2>
+<p>准备一个临时的topic，其中queue的数量是堆积的几倍，上线一台consumer进行分发旧消息，上线多台consumer处理临时的topic<br>
+注意queue的数量要大于consumer，不然有的consumer就闲着</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Redis]]></title>
         <id>https://zwangsheng.github.io/post/redis/</id>
