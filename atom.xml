@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zwangsheng.github.io</id>
     <title>-wangSheng-</title>
-    <updated>2021-01-08T02:16:44.787Z</updated>
+    <updated>2021-01-08T03:02:30.730Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zwangsheng.github.io"/>
     <link rel="self" href="https://zwangsheng.github.io/atom.xml"/>
@@ -152,6 +152,63 @@
 <h2 id="纯内存操作">纯内存操作</h2>
 <h2 id="单线程操作避免了频繁的上下文切换">单线程操作，避免了频繁的上下文切换</h2>
 <h2 id="采用了非阻塞io多路复用机制">采用了非阻塞I/O多路复用机制</h2>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Spring]]></title>
+        <id>https://zwangsheng.github.io/post/spring/</id>
+        <link href="https://zwangsheng.github.io/post/spring/">
+        </link>
+        <updated>2020-12-22T13:38:31.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="springbean-的生命周期">SpringBean 的生命周期</h1>
+<ol>
+<li>实例化BeanFactoryPostProcessor实现类</li>
+<li>执行BeanFactoryPostProcessor的postProcessorBeanFactory方法</li>
+<li>实例化BeanPostProcessor实现类</li>
+<li>实例化InstantiationAwareBeanPostProcessorAdapter的实现类</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessorBeforeInstantiation方法</li>
+<li>执行Bean的构造器</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessorPropertyValues方法</li>
+<li>为Bean注入属性</li>
+<li>调用BeanNameAware的setBeanName方法</li>
+<li>调用BeanFactoryAware的setBeanFactory方法</li>
+<li>执行BeanProcessor的postProcessBeforeInstantiation方法</li>
+<li>调用InitializingBean的afterPropertyset方法</li>
+<li>执行init-method方法</li>
+<li>BeanPostProcessor的postProcessAfterInitialization方法</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessAfterInitialization方法</li>
+<li>正常可以调用</li>
+<li>DiposibleBean的destory方法</li>
+<li>执行destory-method方法</li>
+</ol>
+<h1 id="spring-ioc">Spring IOC</h1>
+<p>控制反转的思想，将程序原本直接创建对象的权利转交给Spring框架</p>
+<p>IOC容器来为我们注入我们需要的对象</p>
+<h1 id="spring-aop">Spring AOP</h1>
+<p>面向切面编程，将那些业务无关，但是被业务需要的代码封装起来，降低耦合</p>
+<p>AOP基于动态代理，实现了接口就用JDK动态代理，未实现的就用CGLIB来代理</p>
+<h1 id="springbean-的作用域">SpringBean 的作用域</h1>
+<h2 id="singleton">Singleton</h2>
+<p>单例，默认单例</p>
+<h2 id="prototype">Prototype</h2>
+<p>每次请求这个bean都会产生一个新的bean</p>
+<h2 id="request">Request</h2>
+<p>每一次Http请求就会产生新的bean，仅在http request有效</p>
+<h2 id="session">Session</h2>
+<p>每一次Http请求就会产生新的bean，仅在http session有效</p>
+<h1 id="bean-和-component的区别">@Bean 和 @Component的区别</h1>
+<ol>
+<li>作用对象不同<br>
+@Component作用于对象，@Bean作用于方法</li>
+<li>使用场景<br>
+@Component一般是扫描的时候标注进行自动装配，@Bean声明这个方法产生bean</li>
+</ol>
+<h1 id="spring的隔离级别">Spring的隔离级别</h1>
+<h2 id="isolation_default">ISOLATION_DEFAULT</h2>
+<h2 id="isolation_read_uncommitted">ISOLATION_READ_UNCOMMITTED</h2>
+<h2 id="isolation_read_committed">ISOLATION_READ_COMMITTED</h2>
+<h2 id="isolation_repeatable_read">ISOLATION_REPEATABLE_READ</h2>
+<h2 id="isolation_serializable">ISOLATION_SERIALIZABLE</h2>
 ]]></content>
     </entry>
     <entry>
@@ -1215,317 +1272,6 @@ fair 控制公平非公平<br>
 <li>共享锁替代独占锁</li>
 </ol>
 <h2 id="单例模式">单例模式</h2>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM]]></title>
-        <id>https://zwangsheng.github.io/post/jvm/</id>
-        <link href="https://zwangsheng.github.io/post/jvm/">
-        </link>
-        <updated>2020-12-09T01:49:05.000Z</updated>
-        <content type="html"><![CDATA[<!-- more -->
-<h2 id="java-程序的执行过程">java 程序的执行过程</h2>
-<p>.java -(javac)&gt; .class -(JVM)&gt; 方法区<br>
-java 文件被javac翻译成class文件，由jvm加载到方法区，可以被JVM的执行引擎进行执行，执行引擎执行的时候，会翻译成操作系统的机器指令</p>
-<h2 id="jvm的本质">jvm的本质</h2>
-<p>jvm是虚拟化的类操作系统<br>
-操作系统---JVM<br>
-CPU      ---执行引擎<br>
-内存      ---堆，栈<br>
-缓存      ---操作数栈</p>
-<h2 id="java的语言特性">java的语言特性</h2>
-<p>跨平台 --- 有适用于不同操作系统的JVM<br>
-跨语言 --- jvm执行的并不是java语言，而是class文件，class文件具有很好的向后兼容性</p>
-<h1 id="jvm的内存模型">jvm的内存模型</h1>
-<p><img src="https://zwangsheng.github.io/post-images/1607479819417.jpg" alt="" loading="lazy"><br>
----线程私有---</p>
-<h2 id="java虚拟机栈">java虚拟机栈</h2>
-<p>先进后出的数据结构<br>
-JVM运行的时候存放当前线程执行的方法所需的数据，指令，返回地址<br>
-生命周期随着线程<br>
-–Xss 调整大小</p>
-<h3 id="栈帧">栈帧</h3>
-<p>方法调用的单位，方法的进入和退出，对应着栈帧的入栈和出栈</p>
-<h4 id="局部变量表">局部变量表</h4>
-<p>存放局部变量，以槽为单位，一个槽对应32位，对于64位的数据采用高低位占用的方式，对于引用类型的数据，一般存放引用（开启逃逸分析以后，会直接在栈上分配）<br>
-存在jvm的优化策略，上个方法的操作数栈和下个方法的局部变量表共享一块空间</p>
-<h5 id="变量槽复用">变量槽复用</h5>
-<p>当一个局部变量出了它的作用域，它的变量槽可以被其他变量复用，算是JVM的优化操作</p>
-<h4 id="操作数栈">操作数栈</h4>
-<p>存放java方法需要的操作数，方法刚开始的时候为空</p>
-<h4 id="动态连接">动态连接</h4>
-<p>java语言的多态性</p>
-<h4 id="返回地址">返回地址</h4>
-<p>正常返回 程序计数器当中的地址<br>
-异常返回 异常表</p>
-<h2 id="本地方法栈">本地方法栈</h2>
-<p>类似java虚拟机栈，不写，无非运行本地native方法</p>
-<h2 id="程序计数器">程序计数器</h2>
-<p>较小的内存空间，当前线程执行的字节码的行数（为啥要，CPU时间片轮转，挂起的时候，回来还能知道执行到哪了）<br>
-分支，异常处理，循环，跳转依赖于程序计数器<br>
-唯一个不会OOM的区域<br>
----线程共有---</p>
-<h2 id="堆">堆</h2>
-<p>几乎所有对象都在这里分配（1.栈上分配2.TLAB）</p>
-<h2 id="方法区">方法区</h2>
-<p>存储每一个类的结构信息（元信息）<br>
-jdk8 移除，在堆外内存放了一个元信息空间来取代方法区</p>
-<h3 id="常量池">常量池</h3>
-<h4 id="class-常量池静态常量池">class 常量池（静态常量池）</h4>
-<h4 id="运行时常量池">运行时常量池</h4>
-<h4 id="字符串常量池">字符串常量池</h4>
-<h5 id="string-的使用">String 的使用</h5>
-<pre><code>String str1 = &quot;abc&quot;;
-String str2 = new String(&quot;abc&quot;);
-String str3 = new String(&quot;abc&quot;).intern();
-</code></pre>
-<p>经典案例了<br>
-str1 引用字符串常量池，没有塞一个再用<br>
-str2 堆上分配了一个对象，对象引用常量池<br>
-str3 引用字符串常量池，没有塞一个再用<br>
-str1 ！= str2<br>
-str1 ==  str3</p>
-<h2 id="堆外内存直接内存">堆外内存（直接内存）</h2>
-<p>使用会有问题，jvm不进行管理，需要自己进行申请和释放，nio里面有directByteBuffer可以直接用堆外内存，也可以用unsafe进行操作</p>
-<h2 id="jvm启动流程">JVM启动流程</h2>
-<p>JVM启动，根据参数进行申请内存，进行运行时数据区的初始化，加载类到方法区，执行方法</p>
-<h2 id="堆空间的内存划分">堆空间的内存划分</h2>
-<h3 id="分代划分">分代划分</h3>
-<h4 id="新生代-朝生夕亡">新生代 （朝生夕亡）</h4>
-<h5 id="eden-8">Eden 8</h5>
-<h5 id="survivor-from-1">Survivor FROM 1</h5>
-<h5 id="survivor-to-1">Survivor TO 1</h5>
-<h4 id="老年代">老年代</h4>
-<h3 id="region划分">Region划分</h3>
-<h2 id="jvm-对象的创建">JVM 对象的创建</h2>
-<h3 id="jvm-遇到一条new-指令">JVM 遇到一条new 指令</h3>
-<figure data-type="image" tabindex="1"><img src="https://zwangsheng.github.io/post-images/1607482905085.jpg" alt="" loading="lazy"></figure>
-<ol>
-<li>检查加载</li>
-<li>分配内存
-<h4 id="指针碰撞">指针碰撞</h4>
-</li>
-</ol>
-<p>条件：堆内存是绝对工整的<br>
-分配的时候，移动一定位置的指针即可</p>
-<h4 id="空闲列表cms">空闲列表（CMS）</h4>
-<p>条件：维护一个列表<br>
-分配的时候，表上找一个足够大的空间</p>
-<h4 id="cas">CAS</h4>
-<p>失败重试，乐观锁的思想<br>
-读取old值，进行CAS比较，old与new值不同，那么认为不安全，重新取值再进行CAS</p>
-<h4 id="分配缓冲-tlab">分配缓冲 TLAB</h4>
-<p>每个线程持有堆当中的一小块内存（可以扩展），允许其他线程访问，当时不允许修改<br>
-3. 内存空间初始化<br>
-零值初始化，基本类型<br>
-4. 设置<br>
-对象头等的设置<br>
-5. 初始化<br>
-构造方法</p>
-<h3 id="对象的内存布局">对象的内存布局</h3>
-<figure data-type="image" tabindex="2"><img src="https://zwangsheng.github.io/post-images/1607483531411.jpg" alt="" loading="lazy"></figure>
-<h3 id="对象的访问方式">对象的访问方式</h3>
-<h4 id="句柄">句柄</h4>
-<p>在堆内维护一个句柄池，栈上的引用指向句柄池，句柄池有实例的地址和类的地址<br>
-好处：移动对象位置后，不用修改引用指向，只需要修改句柄池<br>
-坏处：多了一步访问</p>
-<h4 id="直接指针hotspot">直接指针（hotspot）</h4>
-<p>栈上引用直接指向对象实例，对象实例的对象头维护一个指向类类型的指针<br>
-好处：直接了当的访问<br>
-坏处：对象的修改，对引用影响大</p>
-<h3 id="判断对象存活">判断对象存活</h3>
-<h4 id="引用计数法python">引用计数法（python）</h4>
-<p>多一条引用+1，少一条引用-1<br>
-存在循环引用，需要额外的方法解决</p>
-<h4 id="可达性分析">可达性分析</h4>
-<p>从GC Roots出发，一路经过的对象认为存活，没经过认为不可存活</p>
-<h5 id="gc-roots">GC Roots</h5>
-<ol>
-<li>局部变量表的引用</li>
-<li>方法区的静态引用</li>
-<li>方法区的常量引用</li>
-<li>native栈引用</li>
-<li>对synchronized持有的对象</li>
-<li>跨代引用</li>
-</ol>
-<h6 id="class的回收条件">class的回收条件</h6>
-<ol>
-<li>无该类实例</li>
-<li>该类的加载器被回收</li>
-<li>class没有被反射调用</li>
-<li>参数开启</li>
-</ol>
-<h3 id="引用类型">引用类型</h3>
-<h4 id="强引用">强引用</h4>
-<p>=，除非断开不然不回收</p>
-<h4 id="软引用-softreference">软引用 SoftReference</h4>
-<p>先回收其他对象，如果还不够就回收软引用</p>
-<h4 id="弱引用-weakreference">弱引用 WeakReference</h4>
-<p>发生垃圾回收就会被回收</p>
-<h4 id="虚引用-phantomreference">虚引用 PhantomReference</h4>
-<p>随时被回收</p>
-<h3 id="逃逸分析">逃逸分析</h3>
-<p>参数控制，默认开启<br>
-如果一个对象逃不出这个方法，那么会采取栈上分配</p>
-<h3 id="大对象直接进入老年代">大对象直接进入老年代</h3>
-<ol>
-<li>避免大量的内存复制</li>
-<li>避免提前垃圾回收</li>
-</ol>
-<h3 id="长期存活进入老年代">长期存活进入老年代</h3>
-<p>默认15岁，CMS 6，存活一次加一岁</p>
-<h3 id="动态年龄分配">动态年龄分配</h3>
-<p>Survivor相同年龄的对象到达空间的一半，那么大于等于这个年纪的对象进入老年代</p>
-<h3 id="空间分配担保">空间分配担保</h3>
-<p>发生minor GC之前，检查老年代的剩余空间是否大于新生代所有对象的空间<br>
-检查老年代最大的大小，满足新生代平均大小，可以就minorGC，不然直接fullGC</p>
-<h3 id="垃圾回收算法">垃圾回收算法</h3>
-<h4 id="复制算法copying-新生代">复制算法（Copying） - 新生代</h4>
-<p>内存分成两块，每次使用一块，垃圾回收时，活的移到另外一块，直接清空之前那块<br>
-实现简单，运行高效<br>
-空间浪费</p>
-<h5 id="apple式回收">apple式回收</h5>
-<p>分成 8:1:1 的eden from to<br>
-回收eden 和上次存放存活对象的那块，存活的对象移到另外一块上<br>
-浪费少，高效</p>
-<h4 id="标记-清除mark-sweepcms">标记-清除（Mark-Sweep）CMS</h4>
-<p>扫描标记不可活对象<br>
-扫描回收不可活对象<br>
-扫描了两边，回收效率低，会造成大量不连续的空间碎片</p>
-<h4 id="标记-整理mark-compact">标记-整理（Mark-Compact）</h4>
-<p>扫描比较不可活对象<br>
-扫描移动存活对象到内存一侧<br>
-清空另一侧<br>
-效率低，直接指针访问方法需要修改大量的指针</p>
-<h3 id="垃圾回收器">垃圾回收器</h3>
-<h4 id="serialserial-old">Serial/Serial Old</h4>
-<p>单线程的垃圾收集器，新生代和老年代版本<br>
-不存在线程切换，当空间小的时候效率高</p>
-<h4 id="parallel-scavengeparallel-scavenge">Parallel Scavenge/Parallel Scavenge</h4>
-<p>多线程，关注吞吐量的收集器<br>
-吞吐量（用户时间/（用户时间+垃圾回收时间））</p>
-<h4 id="parnew">ParNew</h4>
-<p>多线程，和CMS搭配工作</p>
-<h4 id="concurrent-mark-sweep-cms">Concurrent Mark Sweep （CMS）</h4>
-<p>最短停顿时间，标记清除<br>
-<img src="https://zwangsheng.github.io/post-images/1607492229313.jpg" alt="" loading="lazy"></p>
-<h5 id="初始标记">初始标记</h5>
-<p>stop the word<br>
-标记GC Roots直接可达的对象<br>
-很快</p>
-<h5 id="并发标记">并发标记</h5>
-<p>从GC Root关联的对象开始，遍历全部</p>
-<h5 id="重新标记">重新标记</h5>
-<p>标记并发那段时间的改动<br>
-很快</p>
-<h5 id="并发清除">并发清除</h5>
-<p>清除不可达对象</p>
-<h5 id="cpu敏感">CPU敏感</h5>
-<p>CPU &lt; 4 停顿感知很明显</p>
-<h5 id="浮动垃圾">浮动垃圾</h5>
-<p>并发清理的过程中会产生新的垃圾，意味着CMS需要预留空间 92%</p>
-<h5 id="空间碎片">空间碎片</h5>
-<p>由于标记-清除算法，会产生碎片垃圾，有个参数，允许分配不了大对象的时候进行内存碎片整理</p>
-<h4 id="garbage-firstg1">Garbage First(G1)</h4>
-<p>利用region的思想取代分代思想，实现可预测停顿<br>
-<img src="https://zwangsheng.github.io/post-images/1607492943584.jpg" alt="" loading="lazy"></p>
-<h5 id="region">Region</h5>
-<p>region具有种类，可能是Eden，Survivor，Old，Humongous（大对象，region的容量一半，一般作为老年代对待）</p>
-<h5 id="top-at-mark-starttams">Top at Mark Start（TAMS）</h5>
-<p>每个Region中有两个TAMS，用来记录并发回收过程产生的新对象，认为他们不需要被回收</p>
-<h5 id="rset-记忆集-解决跨代引用">Rset 记忆集 解决跨代引用</h5>
-<p>记录跨代的引用<br>
-会占据部分堆空间</p>
-<h5 id="cardtabel-卡表-解决rset寻找问题">cardTabel 卡表 解决Rset寻找问题</h5>
-<p>数组记录那块区域之间存在跨代引用</p>
-<h5 id="初始标记-2">初始标记</h5>
-<p>标记GC Roots 直接可达的对象，修改TAMS的值<br>
-可以借用minorGC的时候完成</p>
-<h5 id="并发标记-2">并发标记</h5>
-<p>GC Root开始进行可达性分析，递归扫描整个堆，找出要回收的对象</p>
-<h5 id="最终标记">最终标记</h5>
-<p>处理遗漏的对象</p>
-<h5 id="筛选回收">筛选回收</h5>
-<p>更新region的回收列表，按照价值进行回收，达到可预测停顿的目标，将存活对象移到新的region，删掉旧的</p>
-<h5 id="空间整合">空间整合</h5>
-<p>标记整理 -复制算法</p>
-<h5 id="追求停顿时间">追求停顿时间</h5>
-<h3 id="三色标记">三色标记</h3>
-<ol>
-<li>黑色 根对象或者该对象和其自对象都被扫描过的对象</li>
-<li>灰色 本身被扫描过，自对象没有被扫描</li>
-<li>白色 未被扫描的对象</li>
-</ol>
-<h4 id="三色标记漏标的处理办法">三色标记漏标的处理办法</h4>
-<h5 id="incremental-update-cms">Incremental Update CMS</h5>
-<p>关注引用的增加<br>
-当一个白对象被黑对象引用，将黑标灰，重新扫描灰</p>
-<h5 id="snapshot-at-the-beginningsatbg1">snapshot-at-the-beginning（SATB）G1</h5>
-<p>关注引用的删除<br>
-拍一个快照，发现灰与白的引用消失以后，按照快找照进行对比标记</p>
-<h3 id="安全点">安全点</h3>
-<p>GC 线程通知业务线程要进行GC，而不是强制打断<br>
-业务线程一直轮训GC的标识位，发生GC之后，到达一些安全点之后，会把自己挂起<br>
-安全点一般是方法跳用，循环跳转，异常跳转，不会和对象引用有关</p>
-<h3 id="安全区">安全区</h3>
-<p>在这块代码片段内，引用不会发生变化<br>
-GC不会管在安全区里面的线程<br>
-线程出安全区之前要轮训查看是否完成GC了</p>
-<h3 id="class文件">Class文件</h3>
-<p>8 字节为单位的二进制流<br>
-加载方式很多，数据库，IO，ZIP，JAR</p>
-<h4 id="无符号数">无符号数</h4>
-<p>两个十六进制一个字节</p>
-<h4 id="魔数">魔数</h4>
-<p>CAFE BABE u4</p>
-<h4 id="版本号">版本号</h4>
-<p>MinorVersion u2 + Major Version u2</p>
-<h4 id="常量池-2">常量池</h4>
-<p>常量池计数 u2 <strong>从1开始计数而不是0</strong></p>
-<h4 id="异常处理">异常处理</h4>
-<p>类文件会存储一个异常表，from to goto 哪到哪之间发生异常转跳到哪</p>
-<h3 id="class生命周期">class生命周期</h3>
-<p><img src="https://zwangsheng.github.io/post-images/1607496607656.jpg" alt="" loading="lazy"><br>
-解析的顺序不确定</p>
-<h4 id="加载">加载</h4>
-<p>懒加载，用的时候加载</p>
-<ol>
-<li>通过全限定名来获取类的二进制流</li>
-<li>字节流代表的静态存储结构转变为方法取的数据结构</li>
-<li>内存中生成class对象</li>
-</ol>
-<h4 id="验证">验证</h4>
-<h5 id="文件格式验证-二进制流">文件格式验证 （二进制流）</h5>
-<p>检查文件格式是不是符合</p>
-<h5 id="元数据验证">元数据验证</h5>
-<p>检查是不是符合java语法</p>
-<h5 id="字节码验证">字节码验证</h5>
-<p>检查逻辑是不是符合语法</p>
-<h5 id="符号引用验证">符号引用验证</h5>
-<p>检查是不是存在非法引用</p>
-<h4 id="准备">准备</h4>
-<p>为静态变量分配内存和设置零值</p>
-<h4 id="解析">解析</h4>
-<p>将符号引用转变为直接饮用</p>
-<h4 id="初始化">初始化</h4>
-<p>对static方法进行初始化</p>
-<ol>
-<li>遇到new, getStatic等字节码立马进行初始化<br>
-一般是new实例化，读取一些静态字段（放入方法区的除外），调用静态方法</li>
-<li>反射</li>
-<li>父类未初始化</li>
-<li>虚拟机启动的main类<br>
-###类加载器<br>
-Bootstrap ClassLoader 加载rt.jar、resources.jar、charsets.jar<br>
-Extention ClassLoader 加载 lib/ext 目录下的 jar 包和 .class 文件<br>
-Application ClassLoader 加载 classpath 下的其他所有 jar 包和 .class 文件<br>
-Custom ClassLoader 自定义</li>
-</ol>
-<h4 id="双亲委派机制">双亲委派机制</h4>
-<p><img src="https://zwangsheng.github.io/post-images/1607498153379.jpg" alt="" loading="lazy"><br>
-加载一个东西先问父类能不能加载，不行在一层一层传递<br>
-防止替换了核心库的东西<br>
---- JVM调优之后补 ---</p>
 ]]></content>
     </entry>
 </feed>

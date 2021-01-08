@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spring | -wangSheng-</title>
+<link rel="shortcut icon" href="https://zwangsheng.github.io/favicon.ico?v=1610074945269">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://zwangsheng.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Spring | -wangSheng- - Atom Feed" href="https://zwangsheng.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="SpringBean 的生命周期
+
+实例化BeanFactoryPostProcessor实现类
+执行BeanFactoryPostProcessor的postProcessorBeanFactory方法
+实例化BeanPostProces..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://zwangsheng.github.io">
+  <img class="avatar" src="https://zwangsheng.github.io/images/avatar.png?v=1610074945269" alt="">
+  </a>
+  <h1 class="site-title">
+    -wangSheng-
+  </h1>
+  <p class="site-description">
+    -wangsheng-
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Spring
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-22
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="springbean-的生命周期">SpringBean 的生命周期</h1>
+<ol>
+<li>实例化BeanFactoryPostProcessor实现类</li>
+<li>执行BeanFactoryPostProcessor的postProcessorBeanFactory方法</li>
+<li>实例化BeanPostProcessor实现类</li>
+<li>实例化InstantiationAwareBeanPostProcessorAdapter的实现类</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessorBeforeInstantiation方法</li>
+<li>执行Bean的构造器</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessorPropertyValues方法</li>
+<li>为Bean注入属性</li>
+<li>调用BeanNameAware的setBeanName方法</li>
+<li>调用BeanFactoryAware的setBeanFactory方法</li>
+<li>执行BeanProcessor的postProcessBeforeInstantiation方法</li>
+<li>调用InitializingBean的afterPropertyset方法</li>
+<li>执行init-method方法</li>
+<li>BeanPostProcessor的postProcessAfterInitialization方法</li>
+<li>执行InstantiationAwareBeanPostProcessor的postProcessAfterInitialization方法</li>
+<li>正常可以调用</li>
+<li>DiposibleBean的destory方法</li>
+<li>执行destory-method方法</li>
+</ol>
+<h1 id="spring-ioc">Spring IOC</h1>
+<p>控制反转的思想，将程序原本直接创建对象的权利转交给Spring框架</p>
+<p>IOC容器来为我们注入我们需要的对象</p>
+<h1 id="spring-aop">Spring AOP</h1>
+<p>面向切面编程，将那些业务无关，但是被业务需要的代码封装起来，降低耦合</p>
+<p>AOP基于动态代理，实现了接口就用JDK动态代理，未实现的就用CGLIB来代理</p>
+<h1 id="springbean-的作用域">SpringBean 的作用域</h1>
+<h2 id="singleton">Singleton</h2>
+<p>单例，默认单例</p>
+<h2 id="prototype">Prototype</h2>
+<p>每次请求这个bean都会产生一个新的bean</p>
+<h2 id="request">Request</h2>
+<p>每一次Http请求就会产生新的bean，仅在http request有效</p>
+<h2 id="session">Session</h2>
+<p>每一次Http请求就会产生新的bean，仅在http session有效</p>
+<h1 id="bean-和-component的区别">@Bean 和 @Component的区别</h1>
+<ol>
+<li>作用对象不同<br>
+@Component作用于对象，@Bean作用于方法</li>
+<li>使用场景<br>
+@Component一般是扫描的时候标注进行自动装配，@Bean声明这个方法产生bean</li>
+</ol>
+<h1 id="spring的隔离级别">Spring的隔离级别</h1>
+<h2 id="isolation_default">ISOLATION_DEFAULT</h2>
+<h2 id="isolation_read_uncommitted">ISOLATION_READ_UNCOMMITTED</h2>
+<h2 id="isolation_read_committed">ISOLATION_READ_COMMITTED</h2>
+<h2 id="isolation_repeatable_read">ISOLATION_REPEATABLE_READ</h2>
+<h2 id="isolation_serializable">ISOLATION_SERIALIZABLE</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#springbean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">SpringBean 的生命周期</a></li>
+<li><a href="#spring-ioc">Spring IOC</a></li>
+<li><a href="#spring-aop">Spring AOP</a></li>
+<li><a href="#springbean-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F">SpringBean 的作用域</a>
+<ul>
+<li><a href="#singleton">Singleton</a></li>
+<li><a href="#prototype">Prototype</a></li>
+<li><a href="#request">Request</a></li>
+<li><a href="#session">Session</a></li>
+</ul>
+</li>
+<li><a href="#bean-%E5%92%8C-component%E7%9A%84%E5%8C%BA%E5%88%AB">@Bean 和 @Component的区别</a></li>
+<li><a href="#spring%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB">Spring的隔离级别</a>
+<ul>
+<li><a href="#isolation_default">ISOLATION_DEFAULT</a></li>
+<li><a href="#isolation_read_uncommitted">ISOLATION_READ_UNCOMMITTED</a></li>
+<li><a href="#isolation_read_committed">ISOLATION_READ_COMMITTED</a></li>
+<li><a href="#isolation_repeatable_read">ISOLATION_REPEATABLE_READ</a></li>
+<li><a href="#isolation_serializable">ISOLATION_SERIALIZABLE</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://zwangsheng.github.io/post/mysql/">
+              <h3 class="post-title">
+                MySQL
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Writed By wangSheng
+  <a class="rss" href="https://zwangsheng.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
