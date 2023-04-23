@@ -1,0 +1,6 @@
+# Name of the site
+site_name: Athene
+
+# Site theme
+theme:
+  name: material
