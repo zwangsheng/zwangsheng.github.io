@@ -1,17 +1,4 @@
-# Welcome to MkDocs
+# Welcome to Athene
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Athene，雅典娜，古希腊的智慧女神，表示这个仓库用来存放工作生活中获取总结的知识。
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
