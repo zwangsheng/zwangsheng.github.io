@@ -1,0 +1,1160 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="zwangsheng">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Level DB - Athene</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.975780f9.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#leveldb" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Athene" class="md-header__button md-logo" aria-label="Athene" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Athene
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Level DB
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../source_code/" class="md-tabs__link">
+        Source Code
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../" class="md-tabs__link md-tabs__link--active">
+        Blog
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../about/" class="md-tabs__link">
+      About me
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Athene" class="md-nav__button md-logo" aria-label="Athene" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Athene
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../source_code/">Source Code</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Source Code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Source Code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../source_code/spark/" class="md-nav__link">
+        Spark
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../source_code/flink/" class="md-nav__link">
+        Flink
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../">Blog</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Blog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" checked>
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3_2">
+          Brief Task
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Brief Task" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Brief Task
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Level DB
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Level DB
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#leveldb_1" class="md-nav__link">
+    LevelDB 基础
+  </a>
+  
+    <nav class="md-nav" aria-label="LevelDB 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manifest-file" class="md-nav__link">
+    Manifest File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-file" class="md-nav__link">
+    Current File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-file" class="md-nav__link">
+    Log File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memtable-immutable-memtable" class="md-nav__link">
+    MemTable &amp; Immutable MemTable
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sstable-sorted-string-table" class="md-nav__link">
+    SSTable: Sorted String Table
+  </a>
+  
+    <nav class="md-nav" aria-label="SSTable: Sorted String Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#footer" class="md-nav__link">
+    Footer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block" class="md-nav__link">
+    Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datablock" class="md-nav__link">
+    DataBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filterblock" class="md-nav__link">
+    FilterBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaindexblock" class="md-nav__link">
+    MetaIndexBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexblock" class="md-nav__link">
+    IndexBlock
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    写入过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    读取过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compaction" class="md-nav__link">
+    Compaction 过程
+  </a>
+  
+    <nav class="md-nav" aria-label="Compaction 过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minor-compaction" class="md-nav__link">
+    Minor Compaction
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#major-compaction" class="md-nav__link">
+    Major Compaction
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    Cache
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    总结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        About me
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#leveldb_1" class="md-nav__link">
+    LevelDB 基础
+  </a>
+  
+    <nav class="md-nav" aria-label="LevelDB 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manifest-file" class="md-nav__link">
+    Manifest File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-file" class="md-nav__link">
+    Current File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-file" class="md-nav__link">
+    Log File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memtable-immutable-memtable" class="md-nav__link">
+    MemTable &amp; Immutable MemTable
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sstable-sorted-string-table" class="md-nav__link">
+    SSTable: Sorted String Table
+  </a>
+  
+    <nav class="md-nav" aria-label="SSTable: Sorted String Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#footer" class="md-nav__link">
+    Footer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block" class="md-nav__link">
+    Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datablock" class="md-nav__link">
+    DataBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filterblock" class="md-nav__link">
+    FilterBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaindexblock" class="md-nav__link">
+    MetaIndexBlock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indexblock" class="md-nav__link">
+    IndexBlock
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    写入过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    读取过程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compaction" class="md-nav__link">
+    Compaction 过程
+  </a>
+  
+    <nav class="md-nav" aria-label="Compaction 过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minor-compaction" class="md-nav__link">
+    Minor Compaction
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#major-compaction" class="md-nav__link">
+    Major Compaction
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    Cache
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    总结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+  <nav class="md-tags" >
+    
+      
+      
+        <a href="../../../tags/#level-db" class="md-tag">Level DB</a>
+      
+    
+  </nav>
+
+
+
+
+<h1 id="leveldb">浅谈 LevelDB<a class="headerlink" href="#leveldb" title="Permanent link">&para;</a></h1>
+<p>在阅读 Spark 源码的过程中，发现了内部封装了一份 LevelDB 的类。在类似于 <code>External Shuffle Service</code> 等多处地方都有使用。</p>
+<p>External Shuffle Service 使用 LevelDB 来构建存放 Executors 信息的 ConcurrentHashMap。ESS 默认开启的 <code>spark.shuffle.service.db.enabled</code> 用于帮助 ESS 重启后，获得之前注册的 Executors Block 信息，就是通过 LevelDB 从本地磁盘存储的文件中读取出信息。</p>
+<p>LevelDB 用于构建轻量级的失败恢复机制还是比较合适的。</p>
+<p>因而，浅谈一下LevelDB。</p>
+<h2 id="leveldb_1">LevelDB 基础<a class="headerlink" href="#leveldb_1" title="Permanent link">&para;</a></h2>
+<p>LevelDB 是一个持久化存储的KV系统，LevelDB 偏向于将数据存在内存，随后进行内存溢写到磁盘进行持久化。LevelDB 存储的Key是有序的，并且可以自定义实现比较函数。Level DB 支持 Snapshot（快照功能），能使读操作过程中读取的数据保持一致、支持数据压缩的功能。</p>
+<p>简单的介绍一下：LevelDB 中出现的一些文件和类。</p>
+<p><img alt="引用[1]" src="../images/LevelDB%E7%BB%93%E6%9E%84.png" /></p>
+<p>基本上可以分为在内存中的和在磁盘中的。</p>
+<p>简单来说，内存维护的 MemTable 存放着最新的记录，等待其达到持久化的临界值时，就会先变成 Immutable MemTable，随后经过一系列操作写入到 SSTable 文件中。Log 文件用于记录 MemTable的变化，以便于重构一个 MemTable（为什么需要重构，在下文讲到）。Manifest 文件记录着每个 SSTable 所在的 Level信息，以及其存储记录的最小Key与最大Key。</p>
+<h3 id="manifest-file">Manifest File<a class="headerlink" href="#manifest-file" title="Permanent link">&para;</a></h3>
+<p>根据上述提到的，LevelDB 所存储的 Key 是有序的，那么对于每个存储了KV记录的 SSTable 文件，都会存在文件的最小记录Key和最大记录Key。这部分信息，寻找规定范围内的 SSTable 文件来说很重要。同时，他还会记录每个 SSTable 所在的 Level，即所在层级。</p>
+<h3 id="current-file">Current File<a class="headerlink" href="#current-file" title="Permanent link">&para;</a></h3>
+<p>由于 SSTable 文件发生变化的时候，Manifest 文件也会发生变化，产生新的 Manifest 文件。Current 文件存储的信息就是目前正在用的 Manifest文件。</p>
+<h3 id="log-file">Log File<a class="headerlink" href="#log-file" title="Permanent link">&para;</a></h3>
+<p>Log 文件在 LevelDB 中的作用在于，帮助系统崩溃恢复而不丢失数据。</p>
+<p>假如没有 Log 文件，写入的 Key:Value 记录先写入到内存中，再持久化到磁盘文件中。在写入内存后，系统发生了崩溃，那么内存中未持久化到磁盘的数据就会丢失。</p>
+<p>具体的使用过程为，LevelDB 的写入过程，即使发生了系统崩溃，我们也可以通过 Log 文件来恢复内存中的 MemTable。</p>
+<p>LevelDB 会将一个 Log 文件按照大小进行分割为一块一块的32k大小的 Block。每次读取 Log 文件的时候，都会以一个 Block 作为基本单位进行读取。所以，log 文件可以看作一个一个的32k Block。</p>
+<p><img alt="Log File" src="https://raw.githubusercontent.com/zwangsheng/draw/0ade74c9d4c6fe8f89e84635cae6bd1ecead9367/levelDB/LevelDB-LogFile.drawio.svg" /></p>
+<p>在 LevelDB内部，Block 存储了Record的同时还会存储一个Record的Header，包含CRC验证，记录长度，类型。</p>
+<p><img alt="Log Record" src="https://raw.githubusercontent.com/zwangsheng/draw/f4adffd33a77807573eabc853ee753b446f34770/levelDB/LevelDB-Log-Record.drawio.svg" /></p>
+<ul>
+<li>CRC 验证可以理解为 CheckSum，用来验证数据是否损坏丢失。</li>
+<li>记录长度表示为Record Data的长度</li>
+<li>类型有 FULL，FIRST，LAST，MIDDLE。存在类型的原因为：一个完成的KV记录大小可能大于一条Block的大小，导致需要对KV记录进行切分，如上述图所示。FULL代表Record的所有数据都在这个Block里，没有切分；FIRST代表这里存放的是Record的开头；MIDDLE表示这里存放Record的中间顺序；LAST代表这里存放是Recrod的最后部分。</li>
+</ul>
+<p>LevelDB 即每次读取一块Block，随后按照逻辑进行拼接成完整的以供使用。</p>
+<h3 id="memtable-immutable-memtable">MemTable &amp; Immutable MemTable<a class="headerlink" href="#memtable-immutable-memtable" title="Permanent link">&para;</a></h3>
+<p>总体而言，所有的数据都是存储在 MemTable, Immutable MemTable 和 SSTable 文件中的。而内存中的数据是存放在 MemTable 和 Immutable MemTable中。</p>
+<p>MemTable 与 Immutable MemTable 的区别在于，后者不可修改，只可读。Immutable MemTable 由 MemTable 转化而来。</p>
+<p>当 MemTable 写入的数据占内存达到了一定的数量，则会自动转化成 Immutable MemTable，等待持久化到磁盘当中，经过操作变为SSTable 文件，系统也会自动生成新的 MemTable 以供写入。</p>
+<p>MemTable 提供写入 KV Record，删除以及读取KV记录的接口。然而，实际上，MemTable 并不会真正的删除已经存在于内存中的KV记录，而是会使用Key添加一条带有Key和删除标志的Record。真正的删除操作是Lazy的，等到 Compaction 的过程中，才会去去除这个KV Record。</p>
+<p>值得注意的是，MemTable 会对存储的 KV记录按照Key的大小进行有序的存储，在插入新记录的时候，会需要将这个KV插入到合适的位置上保持Key的有序性。而MemTable 是有 SkipList这类数据结构来实现的。</p>
+<p>具体有关SkipList的会之后展开，篇幅有限这里不进行介绍。</p>
+<p>简单来说，SkipList是平衡树的替代数据结构，与红黑树等平衡树不同的是，SkipList的插入和删除比较简单，并且在插入时不用进行复杂的树节点平衡操作。</p>
+<h3 id="sstable-sorted-string-table">SSTable: Sorted String Table<a class="headerlink" href="#sstable-sorted-string-table" title="Permanent link">&para;</a></h3>
+<p>在上面我们提到过，SSTable 文件存储了持久化的记录数据，并且对应了LevelDB的Level的层级概念。至于如何形成Level，会在下面的 Compaction阶段进行介绍。</p>
+<p>SSTable 文件以.sst为后缀，内部的布局也是一致的。上文介绍了Log 文件是分Block进行存储的，而SSTable也是按照Block进行存储的，不同的是Log文件存储的Record是不用维护有序的，SSTable 文件内部按照Key的从小到大进行排序。</p>
+<p><img alt="SSTable File" src="https://raw.githubusercontent.com/zwangsheng/draw/89f66fd1af0490bd2aecc3ace71ddd37446ddc04/levelDB/LevelDB-SSTable-File.drawio.svg" /></p>
+<p>由上图可以看到，SSTable File存储了五个类型的信息：</p>
+<ul>
+<li>Footer</li>
+<li>IndexBlock</li>
+<li>MetaIndexBlock</li>
+<li>FilterBlock</li>
+<li>DataBlock</li>
+</ul>
+<p>其中，DataBlock存放了Key:Value，FilterBlock存放了布隆过滤器二进制数据。其余三种为管理块，IndexBlock记录了DataBlock相关的信息；MetaIndexBlock记录了FilterBlock相关的信息。而Footer则指出IndexBlock和MetaIndexBlock在文件中的偏移量，指出他们的位置。</p>
+<h4 id="footer">Footer<a class="headerlink" href="#footer" title="Permanent link">&para;</a></h4>
+<p>简单的用伪代码，表示一下Footer类的内部构造。</p>
+<p><div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kd">class</span> <span class="nc">BlockInfo</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="kd">class</span> <span class="nc">Footer</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="n">BlockInfo</span><span class="w"> </span><span class="n">metaIndexInfo</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="n">BlockInfo</span><span class="w"> </span><span class="n">IndexInfo</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">magicBits</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+Footer内部就存放了MetaIndexBlock和IndexBlock的偏移量以及大小，同时记录了LevelDB的MagicWord，使用了对齐填充，使Footer大小始终保持在48字节。</p>
+<h4 id="block">Block<a class="headerlink" href="#block" title="Permanent link">&para;</a></h4>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kd">class</span> <span class="nc">Block</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">type</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">crc</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>其余的四种类型，都属于Block类，即除了里面存放的数据，还包含压缩类型和CRC校验码，占用五个字节。</p>
+<h4 id="datablock">DataBlock<a class="headerlink" href="#datablock" title="Permanent link">&para;</a></h4>
+<p>DataBlock默认大小是4K字节（但并不意味着DataBlock始终在4K以内，之后最后一条记录存储完毕，发现DataBlock &gt; 4k了，才会新创建一个DataBlock，这意味着如果最后一条记录的Value很大，会把DataBlock也撑大。同时这告诉我们，DataBlock不会将Value进行分块存储。），里面存储了一系列的键值对。前文提到了SSTable文件中存储了Key是保持有序的，这意味着Key会存在前缀重叠的情况，LevelDB即可以利用这个特性，节省了一大块的重复前缀空间。</p>
+<p><img alt="DataBlock" src="https://raw.githubusercontent.com/zwangsheng/draw/1434d6c4b7ccb75a3eff22213e718018eec13032/levelDB/levelDB-DataBlock.drawio.svg" /></p>
+<p>DataBlock 按照Shared Key来进行分割，每隔几个Entry就会设置基准Key。基准key的特点是其SharedKey为空。基准Key在Block中的位置，即偏移量会被记录，当作Restart Point。DataBlock会在末尾记录Restart Point的个数。</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kd">class</span> <span class="nc">Entry</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sharedKeyLength</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">unsharedKeyLength</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">valueLength</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">unsharedKeyContent</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">valueContent</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="kd">class</span> <span class="nc">DataBlock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">    </span><span class="n">Entry</span><span class="o">[]</span><span class="w"> </span><span class="n">entries</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">    </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">restartPoints</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">restartPointCount</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>DataBlock 中的基准Key默认为16个Key设置一个，这不是最优的策略。这也意味着SharedKey为空的不一定是基准Key，而是基准Key的SharedKey一定为空。</p>
+<h4 id="filterblock">FilterBlock<a class="headerlink" href="#filterblock" title="Permanent link">&para;</a></h4>
+<p>如果没有开启布隆过滤器，是不存在FilterBlock的。</p>
+<p>布隆过滤器用来加速SSTable 文件的Key定位效率。如果没有布隆过滤器，那么LevelDB会对SSTable文件进行二分查找寻找Key，最后在最坏的情况下，查询了N遍，发现Key不在其中；布隆过滤器的作用就是避免在Key不存在的时候，浪费了查询的IO时间。通过布隆过滤器判断这个Key在不在，然后进行二分查找。</p>
+<p><img alt="Filter Block" src="https://raw.githubusercontent.com/zwangsheng/draw/d67dd88ee1033022ba73c4be88fd70a5f40ac8a6/levelDB/LevelDB-FilterBlock.drawio.svg" /></p>
+<p>通过 BaseLG 分割系数，来判断这块布隆过滤器的Filter Entry 属于那块DataBlock，每块Filter Entry存放连续范围的Key的映射。</p>
+<p>布隆过滤器相关原理和设计，之后出文章浅谈。</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kd">class</span> <span class="nc">FilterEntry</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">raw</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="kd">class</span> <span class="nc">FilterBlock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">    </span><span class="n">FilterEntry</span><span class="o">[]</span><span class="w"> </span><span class="n">filterRaws</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">    </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">filterEntryOffsets</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">offsetArrayOffset</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">baseLG</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h4 id="metaindexblock">MetaIndexBlock<a class="headerlink" href="#metaindexblock" title="Permanent link">&para;</a></h4>
+<p>MetaIndexBlock 存储了前文提到的 FilterBlock的元信息，Key存了固定前缀的filter名称，Value对应的是FilterBlock在文件中的偏移量和长度。</p>
+<p><img alt="MetaIndexBlock" src="https://raw.githubusercontent.com/zwangsheng/draw/90db334d9516af91de1834907aa4229c03d31732/levelDB/LevelDB-MetaIndexBlock.drawio.svg" /></p>
+<h4 id="indexblock">IndexBlock<a class="headerlink" href="#indexblock" title="Permanent link">&para;</a></h4>
+<p>与上述的MetaIndexBlock 类似，不过存储的是 DataBlock的元信息，存在多少的DataBlock，IndexBlock中就有多少的Entry。</p>
+<p>Key存储的是对应的DataBlock中的最大的Key，Value存储的是DataBlock的偏移量和长度。</p>
+<p>不考虑Key的共享，不考虑重启点。</p>
+<p><img alt="IndexBlock" src="https://raw.githubusercontent.com/zwangsheng/draw/94e09fb40865a4f8166b08baee2f2a1ef79d46b5/levelDB/LevelDB-IndexBlock.drawio.svg" /></p>
+<h3 id="_1">写入过程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>LevelDB 写入一个Key:Value记录，LevelDB会先往log File里写入，成功之后，才会将记录插入 MemTable，这样子就完成了对 LevelDB 的写入。</p>
+<p>这也是为什么 LevelDB 写入记录的速度快，只需要一次磁盘文件的添加写和内存SkipList的添加。</p>
+<p>上文提到了，LevelDB 删除记录是Lazy的，本质上会先写入带有删除标记的Key:Value记录，在之后的写入SSTable再进行删除操作。</p>
+<p>更新操作，也不会去真正的更新Key:Value记录。LevelDB的随机读是不理想的，LevelDB更新记录的本质也是插入一个相同Key的键值对，对于旧记录的操作也要到Compaction操作了。</p>
+<p>那么，为什么插入新的一条记录就能达到更新的效果呢，往下看LevelDB的读取操作。</p>
+<h3 id="_2">读取过程<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p><img alt="Read" src="https://raw.githubusercontent.com/zwangsheng/draw/9dfa77e33a0b1fc3bcefe5cae5799aa67177d145/levelDB/LevelDB-Read.drawio.svg" /></p>
+<p>LevelDB 首先会去查看内存中的MemTable，如果没有读取到，则会前往同样存在内存中的 Immutable MemTable 中读取。再没有读取到的话，会进入磁盘读取，由于SSTable 文件会比较多，会进行分层寻找。首先从Level 0进行查询，依次进入，直到找到或者完全没找到。</p>
+<p>为什么会选择这样子的查询路径呢？从内存的MemTable到磁盘的SSTable文件，都保持了优先读取最新鲜的记录的原则。对于Level i 和 Level i+1的SSTable来说，相同的Key，Level i的信息一定比 Level i+1新。</p>
+<p>这就解释了上文，我们提到的更新操作，我们查到最新的记录就会返回，这样子就达到了更新的效果。</p>
+<p>那么为什么Level i 会比 Level i+1 的数据比较新呢？Level i+1 的数据是从 Level i经过 Compaction过程后，得到的。那么原来的Level i变成了 Level i+1，新的 Level i当然记录比 Level i+1更新。</p>
+<p>那么SSTable 文件很多，如何快速的找到key对应的value？</p>
+<p>首先要说明一个特殊的层级Level 0，Level 0的不同文件Key的范围可能会存在重叠，某个待查询的Key在Level 0的多个文件中都存在。</p>
+<p>这样的话LevelDb的策略是先找出level 0中哪些文件包含这个key（manifest 文件中记载了level和对应的文件及文件里key的范围信息，LevelDb在内存中保留这种映射表）， 之后按照文件的新鲜程度排序（更新的思路），新的文件排在前面，之后依次查找，读出key对应的value。而如果是非level 0的话，因为这个level的文件之间key是不重叠的，所以只从一个文件就可以找到key对应的value。</p>
+<p>那么当Level DB得到了Key，获得了Manifest 文件中的 Key的范围后，如何进行寻找？</p>
+<p>Level DB会先去内存的Cache中查找是否缓存了这个文件（节省IO），如果没有缓存，就将文件的索引拉进内存，并放入Cache中。注意这里只有索引部分，随后按照索引找到对应的DataBlock，查看是否含有这个Key，如果没有的话，继续下一Level的查找。</p>
+<h3 id="compaction">Compaction 过程<a class="headerlink" href="#compaction" title="Permanent link">&para;</a></h3>
+<p>Level DB为了保证写入的简单性，可能会导致出现无用的Key（比如需要被修改的Key）记录，为了加快读取和减少存储的数据，Level DB采取了Compaction对已有的记录进行整理压缩，从而删除无效记录，减少数据规模，减少文件数量。</p>
+<p>Level DB 包含两类的 Compaction:
+- Minor Compaction
+- Major Compaction</p>
+<h4 id="minor-compaction">Minor Compaction<a class="headerlink" href="#minor-compaction" title="Permanent link">&para;</a></h4>
+<p>针对于 MemTable内存持有的数据达到阈值之后，将其持久化到磁盘的过程。</p>
+<p>当MemTable持有的数据到达阈值后，MemTable会变为Immutable MemTable，此时不能再向其中写入数据。由于MemTable的结构是多层级的跳表，持有的数据是按Key有序排列的。</p>
+<p>因而Minor Compaction只需按照Immutable MemTable的记录，从小到大的进行遍历，写入一个Level 0的新建SSTable文件中，建立完之后，构建对应的Index文件，随后就完成了Minor Compaction。</p>
+<p>但是，对于被删除的记录，在Minor Compaction中，并没有任何的处理，因为无法直接的定位到Key存在于哪个文件中，进行这个操作需要进行一次读操作。</p>
+<h4 id="major-compaction">Major Compaction<a class="headerlink" href="#major-compaction" title="Permanent link">&para;</a></h4>
+<p>当某个Level 下的 SSTable 文件数目超过一定的值之后，LevelDB会在这个Level（&gt;0）中选择一个文件，将其与高一级的SSTable文件进行合并。</p>
+<p>除去Level 0外的层级中，每个SSTable文件的Key都是从小到大有序存储，并且不同文件不会出现Key范围重叠的问题，所以对于非0层级的Major Compaction，只需要挑选一个文件即可进行。而对于Level 0，需要找出所有重叠的文件参与Major Compaction，即可能存在多个文件参与Major Compaction。</p>
+<p>Level DB选择本层文件进行Major Compaction的时候，遵循按照顺序依次进行，比如本次为1文件进行Major Compaction，下一次就是紧邻着1文件的2文件进行Major Compaction。</p>
+<p>那么给定一系列的文件之后，如何进行合并，保证之前文件有序的情况下，生成的文件也保持有序，同时抛弃无效的Key:Value记录呢？</p>
+<p>Major Compaction 对于多个文件先采取 多路归并排序的方式，依次找出最小的Key记录，也就是多个有序记录进行重排序。之后判断这个记录是否有保存的价值（判断在本层之前，是否存在该Key，即有新的Key记录），如果没有抛弃，有则写如Level i+1 层新的SSTable文件当中。直到最后，抛弃掉这些参与Major Compaction的文件，完成本次Major Compaction。</p>
+<h3 id="cache">Cache<a class="headerlink" href="#cache" title="Permanent link">&para;</a></h3>
+<p>从上文的读取操作，了解到 Level DB会在内存中维护一个Cache，用于帮助快速定位DataBlock。</p>
+<p>如果没有Cache，那么我们需要先加载Index到内存中，随后再加载DataBlock，进行定位，需要两次磁盘IO。</p>
+<p>而Level DB引入了Table Cache 和 Block Cache。</p>
+<p><img alt="TableCache" src="https://raw.githubusercontent.com/zwangsheng/draw/92f8c45be6390a5cb6cda50f00630f07d359a0c8/levelDB/LevelDB-TableCache.drawio.svg" /></p>
+<p>TableCache Key代表SSTable文件的名称，同时Value指向了SSTable的文件指针，便于读取，另外Value还持有指向SSTable对应的Table结构的指针，该Table结构持有SSTable Index内容，以及指向BlockCache的cache Id。</p>
+<p><img alt="BlockCache" src="https://raw.githubusercontent.com/zwangsheng/draw/973ca688e5a50c912fcf78bfc34f0a428491e88e/levelDB/LevelDB-BlockCache.drawio.svg" /></p>
+<p>BlockCache 使用文件的cache id和 Block在文件中的offset 来作为Key，Value代表的则是这个Block的内容。</p>
+<h2 id="_3">总结<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Level DB的SkipList和存储特性，表明其在写多读少的情况下，有较好性能。对于读的支持，也偏向于局部的顺序读（基于其cache特性）。</p>
+<hr />
+<p>引用与参考：
+[1] <a href="https://www.cnblogs.com/haippy/archive/2011/12/04/2276064.html">数据分析与处理之二（Leveldb 实现原理）-- Haippy</a></p>
+<p>[2] <a href="https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/">SSTable and Log Structured Storage: LevelDB -- Ilya Grigorik</a></p>
+<p>[3] <a href="https://juejin.cn/post/6844903779112845319">深入 LevelDB 数据文件 SSTable 的结构 -- 老錢</a></p>
+<p>[4] <a href="https://blog.csdn.net/H514434485/article/details/107122896">【leveldb】Cache（十八）：BlockCache -- 奔跑的哇牛</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Blog" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Blog
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../../about/" class="md-footer__link md-footer__link--next" aria-label="Next: About me" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              About me
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Binjie Yang
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/zwangsheng" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<binjieyang@apache.com>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.tracking", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "search.highlight"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      
+    
+    
+  </body>
+</html>
